@@ -1,0 +1,33 @@
+{{!< default}}
+
+<main class="site-content">
+  {{#post}}
+  <a href="{{@site.url}}" class="back-link">← Retour</a>
+
+  <article>
+    {{#if @page.show_title_and_feature_image}}
+    <header class="post-header">
+      <div class="post-header-meta">
+        {{#if primary_tag.name}}
+        <span class="post-header-tag">{{primary_tag.name}}</span>
+        {{/if}}
+      </div>
+      <h1 class="post-title">{{title}}</h1>
+      {{#if custom_excerpt}}
+      <p class="post-excerpt">{{custom_excerpt}}</p>
+      {{/if}}
+      <hr class="post-divider">
+      {{#if feature_image}}
+      <div class="post-feature-image">
+        <img src="{{feature_image}}" alt="{{title}}" loading="lazy">
+      </div>
+      {{/if}}
+    </header>
+    {{/if}}
+
+    <section class="post-content gh-content">
+      {{content}}
+    </section>
+  </article>
+  {{/post}}
+</main>

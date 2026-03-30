@@ -1,0 +1,10 @@
+{{!< default}}
+<style>:root { --accent: #60a5fa; --accent-light: #93c5fd; --accent-dim: rgba(96,165,250,0.1); --border: #1a2540; --surface: #0d1525; }</style>
+<main class="site-content">
+  {{#post}}
+  <a href="{{@site.url}}" class="back-link">← Retour</a>
+  <div class="gh-content">
+    {{content}}
+  </div>
+  {{/post}}
+</main>

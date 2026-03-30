@@ -1,0 +1,14 @@
+{{!< default}}
+
+<main class="site-content">
+  <div class="error-page fade-in">
+    <div class="error-code">{{statusCode}}</div>
+    <h1 class="error-title">
+      {{#if statusCode}}Erreur {{statusCode}}{{else}}Erreur{{/if}}
+    </h1>
+    <p class="error-desc">
+      {{#if message}}{{message}}{{else}}La page que vous cherchez n'existe pas ou a été déplacée.{{/if}}
+    </p>
+    <a href="{{@site.url}}" class="btn-home">← Retour à l'accueil</a>
+  </div>
+</main>

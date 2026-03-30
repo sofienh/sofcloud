@@ -1,0 +1,60 @@
+<footer class="site-footer">
+  <p class="footer-copy">© {{date format="YYYY"}} Soufiane H. — sofcloud.org</p>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    <span>Disponible pour missions</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/hammamisofien/" target="_blank" rel="noopener" class="footer-link" title="LinkedIn">in</a>
+    <a href="https://github.com/sofienh/sofcloud" target="_blank" rel="noopener" class="footer-link" title="GitHub">gh</a>
+    <a href="mailto:contact@sofcloud.org" class="footer-link" title="Email">@</a>
+    <a href="https://sofcloud.org" class="footer-link" title="Portfolio">←</a>
+  </div>
+  <p class="footer-rgpd">
+    🔒 Site conforme <strong>RGPD</strong> — Aucun cookie tiers sans votre consentement
+    · <a href="javascript:void(0)" onclick="document.getElementById('rgpd-banner').classList.add('visible')">Gérer mes préférences</a>
+  </p>
+</footer>
+
+<!-- RGPD Cookie Banner -->
+<div id="rgpd-banner" class="rgpd-banner" role="dialog" aria-label="Gestion des cookies">
+  <p class="rgpd-banner-text">
+    🍪 Ce site peut utiliser des cookies à des fins d'analyse. Aucune donnée personnelle n'est collectée sans votre accord, conformément au <strong>RGPD</strong>.
+  </p>
+  <div class="rgpd-banner-actions">
+    <button class="rgpd-btn-refuse" onclick="rgpdRefuse()">Refuser</button>
+    <button class="rgpd-btn-accept" onclick="rgpdAccept()">Accepter</button>
+  </div>
+</div>
+
+<script>
+var GTM_ID = 'GTM-XXXXXXX'; // Remplacer par votre ID GTM
+
+function loadGTM() {
+  if (window._gtmLoaded) return;
+  window._gtmLoaded = true;
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+  j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+  f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',GTM_ID);
+}
+
+(function() {
+  var consent = localStorage.getItem('rgpd-consent');
+  if (!consent) {
+    document.getElementById('rgpd-banner').classList.add('visible');
+  } else if (consent === 'accepted') {
+    loadGTM();
+  }
+})();
+
+function rgpdAccept() {
+  localStorage.setItem('rgpd-consent', 'accepted');
+  document.getElementById('rgpd-banner').classList.remove('visible');
+  loadGTM();
+}
+function rgpdRefuse() {
+  localStorage.setItem('rgpd-consent', 'refused');
+  document.getElementById('rgpd-banner').classList.remove('visible');
+}
+</script>

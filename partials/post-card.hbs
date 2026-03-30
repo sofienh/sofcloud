@@ -1,0 +1,21 @@
+<a href="{{url}}" class="post-card">
+  <div class="post-card-meta">
+    <span class="post-card-date">{{date published_at format="DD MMM YYYY"}}</span>
+    {{#if reading_time}}
+    <span class="post-card-readtime">· {{reading_time}} min</span>
+    {{/if}}
+  </div>
+  <h2 class="post-card-title">{{title}}</h2>
+  {{#if custom_excerpt}}
+  <p class="post-card-excerpt">{{custom_excerpt}}</p>
+  {{else if excerpt}}
+  <p class="post-card-excerpt">{{excerpt}}</p>
+  {{/if}}
+  {{#if tags}}
+  <div class="post-card-tags">
+    {{#foreach tags limit="3"}}
+    <span class="post-tag">#{{name}}</span>
+    {{/foreach}}
+  </div>
+  {{/if}}
+</a>

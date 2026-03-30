@@ -1,0 +1,133 @@
+{{!< default}}
+<style>
+:root {
+  --accent: #fb923c; --accent-light: #fdba74; --accent-dim: rgba(251,146,60,0.1);
+  --border: #2d1a08; --surface: #1a0e04; --surface2: #1f1108;
+}
+</style>
+<main class="site-content">
+  <a href="{{@site.url}}" class="back-link">← Retour</a>
+
+  <div class="page-header">
+    <div class="section-label">04 — Veille Sécurité</div>
+  </div>
+
+  <div id="veille-sources" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+    <button class="veille-filter active" data-filter="all" data-color="#fb923c">Tous</button>
+    <button class="veille-filter" data-filter="fuite"     data-color="#ef4444">FrenchBreaches — Fuites</button>
+    <button class="veille-filter" data-filter="blog"      data-color="#3b82f6">FrenchBreaches — Blog</button>
+    <button class="veille-filter" data-filter="zataz"     data-color="#10b981">Zataz</button>
+    <button class="veille-filter" data-filter="certfr"    data-color="#a855f7">CERT-FR</button>
+    <button class="veille-filter" data-filter="undernews" data-color="#f97316">Undernews</button>
+  </div>
+
+  <div id="veille-meta" style="font-family:var(--mono,'DM Mono',monospace);font-size:0.72rem;color:#64748b;margin-bottom:1.5rem;"></div>
+  <div id="veille-grid" class="veille-grid"></div>
+  <div id="veille-loading" style="text-align:center;padding:3rem;color:#64748b;font-family:var(--mono,'DM Mono',monospace);font-size:0.85rem;">Chargement des flux…</div>
+</main>
+
+<style>
+.veille-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+.veille-card {
+  background: #0f1a14; border: 1px solid #1a2d22; border-radius: 12px;
+  padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;
+  transition: border-color 0.2s;
+}
+.veille-card:hover { border-color: rgba(16,185,129,0.3); }
+.veille-card-header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.veille-badge {
+  font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 0.15rem 0.5rem; border-radius: 4px;
+}
+.badge-fuite     { background: rgba(239,68,68,0.1);    color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.badge-blog      { background: rgba(59,130,246,0.1);   color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+.badge-zataz     { background: rgba(16,185,129,0.1);   color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+.badge-certfr    { background: rgba(168,85,247,0.1);   color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+.badge-undernews { background: rgba(249,115,22,0.1);   color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
+.veille-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #64748b; }
+.veille-title a {
+  font-weight: 600; font-size: 0.92rem; color: #f1f5f9;
+  text-decoration: none; line-height: 1.4;
+}
+.veille-title a:hover { color: #10b981; }
+.veille-summary { font-size: 0.82rem; color: #64748b; line-height: 1.65; flex: 1; }
+.veille-filter {
+  font-family: 'DM Mono', monospace; font-size: 0.72rem; padding: 0.3rem 0.75rem;
+  border-radius: 6px; border: 1px solid #1a2d22; background: #0f1a14;
+  color: #64748b; cursor: pointer; transition: all 0.15s;
+}
+.veille-filter:hover, .veille-filter.active { border-color: #fb923c; color: #fb923c; }
+</style>
+
+<script>
+(function () {
+  var grid = document.getElementById('veille-grid');
+  var loading = document.getElementById('veille-loading');
+  var meta = document.getElementById('veille-meta');
+  var allArticles = [];
+  var activeFilter = 'all';
+
+  function formatDate(str) {
+    if (!str) return '';
+    try {
+      var d = new Date(str);
+      return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch(e) { return str.substring(0, 10); }
+  }
+
+  function esc(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+  function safeUrl(url) {
+    try {
+      var u = new URL(url);
+      return (u.protocol === 'https:' || u.protocol === 'http:') ? url : '#';
+    } catch(e) { return '#'; }
+  }
+
+  function render(articles) {
+    if (!articles.length) { grid.innerHTML = '<p style="color:#64748b;font-size:0.9rem;">Aucun article.</p>'; return; }
+    grid.innerHTML = articles.map(function(a) {
+      return '<div class="veille-card">'
+        + '<div class="veille-card-header">'
+        + '<span class="veille-badge badge-' + esc(a.badge) + '">' + esc(a.source) + '</span>'
+        + '<span class="veille-date">' + esc(formatDate(a.published)) + '</span>'
+        + '</div>'
+        + '<div class="veille-title"><a href="' + safeUrl(a.link) + '" target="_blank" rel="noopener">' + esc(a.title) + '</a></div>'
+        + (a.summary ? '<div class="veille-summary">' + esc(a.summary) + '…</div>' : '')
+        + '</div>';
+    }).join('');
+  }
+
+  function applyFilter(f) {
+    activeFilter = f;
+    document.querySelectorAll('.veille-filter').forEach(function(btn) {
+      var isActive = btn.dataset.filter === f;
+      btn.classList.toggle('active', isActive);
+      var c = btn.dataset.color || '#06b6d4';
+      btn.style.borderColor = isActive ? c : '';
+      btn.style.color = isActive ? c : '';
+    });
+    render(f === 'all' ? allArticles : allArticles.filter(function(a) { return a.badge === f; }));
+  }
+
+  document.querySelectorAll('.veille-filter').forEach(function(btn) {
+    btn.addEventListener('click', function() { applyFilter(btn.dataset.filter); });
+  });
+
+  fetch('/content/files/security-feed.json?t=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      loading.style.display = 'none';
+      allArticles = data.articles || [];
+      var d = new Date(data.updated);
+      meta.textContent = 'Dernière mise à jour : ' + d.toLocaleString('fr-FR') + ' — ' + allArticles.length + ' articles';
+      render(allArticles);
+    })
+    .catch(function() {
+      loading.textContent = 'Impossible de charger les flux. Réessayez plus tard.';
+    });
+})();
+</script>

@@ -1,0 +1,58 @@
+{{!< default}}
+
+<main class="site-content">
+  {{#post}}
+  <a href="{{@site.url}}" class="back-link">← Retour au blog</a>
+
+  <article>
+    <header class="post-header">
+      <div class="post-header-meta">
+        {{#if primary_tag}}
+        <span class="post-header-tag">{{primary_tag.name}}</span>
+        {{/if}}
+        <span class="post-header-date">{{date published_at format="DD MMMM YYYY"}}</span>
+        {{#if reading_time}}
+        <span class="post-header-readtime">· {{reading_time}} min de lecture</span>
+        {{/if}}
+      </div>
+      <h1 class="post-title">{{title}}</h1>
+      {{#if custom_excerpt}}
+      <p class="post-excerpt">{{custom_excerpt}}</p>
+      {{/if}}
+      <hr class="post-divider">
+    </header>
+
+    {{#if feature_image}}
+    <div class="post-feature-image">
+      <img
+        src="{{feature_image}}"
+        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+        loading="lazy"
+      >
+      {{#if feature_image_caption}}
+      <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;font-family:var(--mono)">{{feature_image_caption}}</p>
+      {{/if}}
+    </div>
+    {{/if}}
+
+    <section class="post-content gh-content">
+      {{content}}
+    </section>
+
+    <footer class="post-footer">
+      {{#if tags}}
+      <div class="post-tags-list">
+        {{#foreach tags}}
+        <a href="{{url}}" class="post-tag">#{{name}}</a>
+        {{/foreach}}
+      </div>
+      {{/if}}
+      <div class="post-share">
+        <span class="post-share-label">Partager :</span>
+        <a href="https://twitter.com/intent/tweet?text={{encode title}}&url={{url absolute="true"}}" target="_blank" rel="noopener" class="share-btn">Twitter/X</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{url absolute="true"}}" target="_blank" rel="noopener" class="share-btn">LinkedIn</a>
+      </div>
+    </footer>
+  </article>
+  {{/post}}
+</main>
