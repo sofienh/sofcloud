@@ -47,6 +47,15 @@ Dans `partials/footer.hbs`, remplacer `GTM-XXXXXXX` par votre ID Google Tag Mana
 
 Dans `default.hbs`, faire de même pour la balise noscript GTM.
 
+## Chatbot IA — SofBot
+
+Widget chatbot intégré en pied de page via [Flowise](https://flowiseai.com) :
+
+- **LLM** : Llama 3.3 70B via Groq API (gratuit)
+- **RAG** : Faiss vector store + HuggingFace Embeddings (`paraphrase-multilingual-MiniLM-L12-v2`)
+- **Sources** : pages du portfolio scrapées via Cheerio
+- **Hébergement** : conteneur Docker `flowise` sur `bot.sofcloud.org`
+
 ## Scripts associés
 
 | Script | Rôle |
