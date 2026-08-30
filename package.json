@@ -1,19 +1,20 @@
 {
   "name": "ghost-theme-sofcloud",
   "description": "Thème Ghost dark — sofcloud.org (DM Sans / DM Mono)",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "author": {
     "email": "contact@sofcloud.org"
   },
   "engines": {
-    "ghost": ">=5.0.0"
+    "ghost": ">=5.0.0 <7.0.0"
   },
   "license": "MIT",
   "keywords": [
     "ghost-theme"
   ],
+  "card_assets": false,
   "config": {
-    "posts_per_page": 10,
+    "posts_per_page": 8,
     "image_sizes": {
       "xs": { "width": 300 },
       "s": { "width": 600 },

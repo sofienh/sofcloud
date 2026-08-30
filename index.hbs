@@ -1,10 +1,20 @@
 {{!< default}}
 
 <section class="sc-hero">
+  <div class="sc-planet-home" aria-hidden="true">
+    <img src="{{asset "full-moon.svg"}}" class="sc-planet-moon" alt="" width="135" height="135">
+  </div>
+  <canvas id="hero-stars" aria-hidden="true"></canvas>
+  <div class="hero-geo" aria-hidden="true">
+    <span class="hg-corner hg-tl"></span>
+    <span class="hg-corner hg-tr"></span>
+    <span class="hg-corner hg-bl"></span>
+    <span class="hg-corner hg-br"></span>
+  </div>
   <div class="sc-hero-inner">
     <div>
-      <h1 class="hero-name">Soufiane H.</h1>
-      <p class="hero-title"><strong>Expert R&#233;seaux Infrastructures &amp; S&#233;curit&#233;</strong></p>
+      <h1 class="hero-name">SofCloud</h1>
+      <p class="hero-title">Soufiane H. &mdash; <strong>Responsable Informatique</strong></p>
       <p class="hero-tagline">La cybers&#233;curit&#233; est avant tout une affaire d&#8217;humains.</p>
       <p class="hero-bio">
         14 ans d&#8217;exp&#233;rience dans les r&#233;seaux, infrastructures et cybers&#233;curit&#233;.
@@ -52,61 +62,101 @@
           <div class="card-stat-num">35+</div>
           <div class="card-stat-label">projets terrain</div>
         </div>
-        <div class="card-stat">
-          <div class="card-stat-num">EBIOS</div>
-          <div class="card-stat-label">Risk Manager</div>
-        </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <section class="sc-status-section">
   <div class="sc-status-label">
-    <span id="kuma-dot" class="sc-status-dot"></span>
+    <span id="kuma-dot" class="sc-status-dot up"></span>
     <span>Infrastructure — sofcloud.org</span>
     <a href="https://kuma.sofcloud.org/status/sofcloud" target="_blank" rel="noopener" class="sc-status-link">voir tout ↗</a>
   </div>
   <div class="sc-status-card">
     <div class="sc-status-main">
-      <span id="kuma-status-text" class="sc-status-text">Chargement…</span>
+      <span id="kuma-status-text" class="sc-status-text up">Opérationnel</span>
       <div class="sc-status-stats">
         <div class="sc-stat"><span class="sc-stat-val" id="kuma-ping">—</span><span class="sc-stat-lbl">ms</span></div>
         <div class="sc-stat"><span class="sc-stat-val" id="kuma-uptime24">—</span><span class="sc-stat-lbl">uptime</span></div>
       </div>
     </div>
-    <div style="margin-top:1rem;position:relative;height:120px;">
+    <div class="sc-kuma-chart-wrap">
       <canvas id="kuma-chart"></canvas>
     </div>
   </div>
 </section>
 
+<div class="sc-space-banner" aria-hidden="true">
+  <canvas id="banner-stars"></canvas>
+  <div class="sc-banner-scaler">
+    <img src="{{asset "astronaute.svg"}}" alt="" fetchpriority="high">
+  </div>
+</div>
+<script>
+(function() {
+  var c = document.getElementById('banner-stars');
+  if (!c) return;
+  var ctx = c.getContext('2d'), stars = [], W = 0, H = 0;
+  function init() {
+    stars = [];
+    for (var i = 0; i < 180; i++) {
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.2+0.2, o: Math.random()*0.7+0.2, do: (Math.random()-0.5)*0.007 });
+    }
+  }
+  function draw() {
+    if (W && H) {
+      ctx.clearRect(0,0,W,H);
+      for (var i=0;i<stars.length;i++) {
+        var s=stars[i]; s.o+=s.do; if(s.o>0.9||s.o<0.1) s.do*=-1;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  draw();
+})();
+</script>
+
 <style>
-.sc-status-section { max-width: 1400px; margin: 0 auto 3rem; padding: 0 3rem; }
+.sc-planet-home { position: absolute; right: -4vw; top: 0; bottom: 0; display: flex; align-items: center; pointer-events: none; z-index: 0; overflow: hidden; clip-path: inset(0); }
+.sc-planet-moon {
+  display: block; width: 34vw; max-width: 440px; opacity: 0.28;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+  animation: planet-drift-home 22s ease-in-out infinite;
+}
+@keyframes planet-drift-home { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.sc-status-section { max-width: var(--layout-max); margin: 0 auto; padding: 0 var(--layout-pad); position: relative; z-index: 2; }
+.sc-kuma-chart-wrap { margin-top: 1rem; position: relative; height: var(--kuma-chart-h, 120px); overflow: hidden; border-radius: 6px; }
 .sc-status-label {
   display: flex; align-items: center; gap: 0.6rem;
   font-family: var(--mono,'DM Mono',monospace); font-size: 0.72rem;
   text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent);
   margin-bottom: 0.75rem;
 }
-.sc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #64748b; flex-shrink: 0; }
-.sc-status-dot.up { background: #34d399; animation: pulse 2s infinite; }
-.sc-status-dot.down { background: #ef4444; }
-.sc-status-link { margin-left: auto; color: var(--text-muted,#64748b); text-decoration: none; font-size: 0.7rem; }
-.sc-status-link:hover { color: var(--accent); }
+.sc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
+.sc-status-dot.up { background: var(--accent); animation: pulse 2s infinite; }
+.sc-status-dot.down { background: var(--red); }
+.sc-status-link { margin-left: auto; color: var(--accent); text-decoration: none; font-size: 0.7rem; }
+.sc-status-link:hover { color: var(--accent-light); }
 .sc-status-card {
-  background: var(--surface,#0f1a14); border: 1px solid var(--border,#1a2d22);
+  background: rgba(3, 10, 6, 0.88);
+  backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.6);
   border-radius: 12px; padding: 1.25rem 1.5rem;
 }
 .sc-status-main { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-.sc-status-text { font-family: var(--mono,'DM Mono',monospace); font-size: 0.85rem; color: #64748b; }
-.sc-status-text.up { color: #34d399; }
-.sc-status-text.down { color: #ef4444; }
+.sc-status-text { font-family: var(--mono,'DM Mono',monospace); font-size: 0.85rem; color: var(--accent); }
+.sc-status-text.up { color: var(--accent); }
+.sc-status-text.down { color: var(--red); }
 .sc-status-stats { display: flex; gap: 1.5rem; }
 .sc-stat { display: flex; flex-direction: column; align-items: flex-end; }
 .sc-stat-val { font-family: var(--mono,'DM Mono',monospace); font-size: 1rem; font-weight: 600; color: var(--accent); }
-.sc-stat-lbl { font-family: var(--mono,'DM Mono',monospace); font-size: 0.65rem; color: #64748b; text-transform: uppercase; }
+.sc-stat-lbl { font-family: var(--mono,'DM Mono',monospace); font-size: 0.65rem; color: var(--accent); text-transform: uppercase; }
 </style>
 
 <script>
@@ -122,6 +172,7 @@
 
   function drawChart(canvas, beats) {
     var W = canvas.parentElement.offsetWidth || 800;
+    var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#34d399';
     var H = 120;
     var dpr = window.devicePixelRatio || 1;
     canvas.width = W * dpr; canvas.height = H * dpr;
@@ -146,7 +197,7 @@
     });
 
     // Labels Y
-    ctx.fillStyle = '#475569';
+    ctx.fillStyle = accentColor;
     ctx.font = '10px DM Mono, monospace';
     ctx.textAlign = 'right';
     [0, Math.round(max/2), Math.round(max)].forEach(function(v) {
@@ -154,9 +205,11 @@
       ctx.fillText(v, pad.left - 4, y + 3);
     });
 
-    // Labels X (6 max)
+    // Labels X (adaptatif selon largeur)
+    ctx.fillStyle = accentColor;
     ctx.textAlign = 'center';
-    var step6 = Math.max(1, Math.floor(n / 6));
+    var maxLabels = Math.min(6, Math.max(2, Math.floor(cw / 75)));
+    var step6 = Math.max(1, Math.floor(n / maxLabels));
     beats.forEach(function(b, i) {
       if (i % step6 !== 0 && i !== n - 1) return;
       var t = new Date(b.time.replace(' ', 'T') + 'Z');
@@ -182,7 +235,7 @@
       var y = pad.top + ch * (1 - b.ping / max);
       if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
     });
-    ctx.strokeStyle = '#34d399';
+    ctx.strokeStyle = accentColor;
     ctx.lineWidth = 1.5;
     ctx.lineJoin = 'round';
     ctx.stroke();
@@ -192,12 +245,13 @@
       ctx.lineTo(pad.left + (n - 1) * step, pad.top + ch);
       ctx.lineTo(pad.left, pad.top + ch);
       ctx.closePath();
-      ctx.fillStyle = 'rgba(52,211,153,0.07)';
+      ctx.fillStyle = 'rgba(52,211,153,0.07)'; /* accent avec opacité fixe — intentionnel */
       ctx.fill();
     }
   }
 
-  fetch('/content/files/kuma-status.json?t=' + Date.now())
+  function _fetchKuma() {
+    fetch('/content/files/kuma-status.json?t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(data) {
       var beats = data.beats || [];
@@ -211,5 +265,70 @@
       }
     })
     .catch(function() { setStatus(true); });
+  }
+  if (window.requestIdleCallback) {
+    requestIdleCallback(_fetchKuma, { timeout: 3000 });
+  } else {
+    window.addEventListener('load', function() { setTimeout(_fetchKuma, 200); });
+  }
 })();
 </script>
+
+<script>
+(function() {
+  var c = document.getElementById('hero-stars');
+  if (!c) return;
+  var ctx = c.getContext('2d'), stars = [], W = 0, H = 0;
+  function init() {
+    stars = [];
+    for (var i = 0; i < 100; i++) {
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.1+0.2, o: Math.random()*0.6+0.2, do: (Math.random()-0.5)*0.008 });
+    }
+  }
+  function draw() {
+    if (W && H) {
+      ctx.clearRect(0,0,W,H);
+      for (var i=0;i<stars.length;i++) {
+        var s=stars[i]; s.o+=s.do; if(s.o>0.85||s.o<0.1) s.do*=-1;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  draw();
+})();
+</script>
+
+
+<div class="sc-stars-bottom" aria-hidden="true">
+  <canvas id="stars-bottom"></canvas>
+</div>
+<script>
+(function() {
+  var c = document.getElementById('stars-bottom');
+  if (!c) return;
+  var ctx = c.getContext('2d'), stars = [], W = 0, H = 0;
+  function init() {
+    stars = [];
+    for (var i = 0; i < 120; i++) {
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.2+0.2, o: Math.random()*0.7+0.2, do: (Math.random()-0.5)*0.01 });
+    }
+  }
+  function draw() {
+    if (W && H) {
+      ctx.clearRect(0,0,W,H);
+      for (var i=0;i<stars.length;i++) {
+        var s=stars[i]; s.o+=s.do; if(s.o>0.9||s.o<0.1) s.do*=-1;
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  draw();
+})();
+</script>
+

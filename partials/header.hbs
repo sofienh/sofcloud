@@ -1,6 +1,6 @@
 <header class="site-header">
-  <a href="{{@site.url}}" class="site-nav-left">
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Sofcloud logo">
+  <a href="{{@site.url}}" class="site-nav-left" aria-label="SofCloud — Accueil">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <linearGradient id="sc-g" x1="16" y1="7" x2="16" y2="22" gradientUnits="userSpaceOnUse">
           <stop stop-color="#8ec84e"/>
@@ -20,13 +20,14 @@
       <circle cx="9"  cy="15" r="0.75" fill="#2e4412" opacity="0.9"/>
       <circle cx="23" cy="15" r="0.75" fill="#2e4412" opacity="0.9"/>
     </svg>
-    <span class="nav-brand-name">{{@site.title}}</span>
+    <span class="nav-brand-name">SofCloud</span>
   </a>
   <nav class="site-nav-right">
     {{#each @site.navigation}}
     <a href="{{this.url}}" class="nav-link">{{label}}</a>
     {{/each}}
-    <a href="mailto:contact@sofcloud.org" class="nav-cta">Me contacter</a>
+    <a href="/lab-notes/" class="nav-link">Lab Notes</a>
+    <a href="/a-propos/" class="nav-cta">Me contacter</a>
   </nav>
   <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -37,7 +38,8 @@
   {{#each @site.navigation}}
   <a href="{{this.url}}" class="mobile-nav-link" onclick="closeMobileMenu()">{{label}}</a>
   {{/each}}
-  <a href="mailto:contact@sofcloud.org" class="mobile-nav-cta" onclick="closeMobileMenu()">Me contacter</a>
+  <a href="/lab-notes/" class="mobile-nav-link" onclick="closeMobileMenu()">Lab Notes</a>
+  <a href="/a-propos/" class="mobile-nav-cta" onclick="closeMobileMenu()">À propos</a>
 </div>
 
 <script>
@@ -60,6 +62,17 @@
     if (!btn.contains(e.target) && !menu.contains(e.target)) closeMobileMenu();
   });
 
+  // Dropdown Lab Notes
+  var wrap = document.querySelector('.nav-dropdown-wrap');
+  if (wrap) {
+    var closeTimer;
+    wrap.addEventListener('mouseenter', function() { clearTimeout(closeTimer); wrap.classList.add('open'); });
+    wrap.addEventListener('mouseleave', function() { closeTimer = setTimeout(function() { wrap.classList.remove('open'); }, 120); });
+    document.addEventListener('click', function(e) {
+      if (!wrap.contains(e.target)) wrap.classList.remove('open');
+    });
+  }
+
   // Couleurs par page
   var NAV_COLORS = {
     '/':              '#34d399',
@@ -67,7 +80,8 @@
     '/competences/':  '#a78bfa',
     '/projets/':      '#fbbf24',
     '/veille/':       '#fb923c',
-    '/a-propos/':     '#22d3ee'
+    '/a-propos/':     '#22d3ee',
+    '/lab-notes/': '#fb7185'
   };
   document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(function(link) {
     var path = new URL(link.href, window.location.origin).pathname;
@@ -78,3 +92,34 @@
   });
 })();
 </script>
+
+<style>
+.nav-brand-sep { opacity: 0.4; }
+@media (max-width: 900px) { .nav-brand-role { display: none; } }
+.nav-dropdown-wrap { position: relative; display: inline-flex; align-items: center; }
+.nav-caret { font-size: 0.65em; margin-left: 0.2em; opacity: 0.7; transition: transform 0.2s; display: inline-block; }
+.nav-dropdown-wrap.open .nav-caret { transform: rotate(180deg); }
+.nav-dropdown-wrap::after {
+  content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 0.6rem;
+}
+.nav-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 0.6rem); left: 50%;
+  transform: translateX(-50%); min-width: 230px;
+  background: #0f1a14; border: 1px solid #1a2d22; border-radius: 10px;
+  padding: 0.4rem 0; list-style: none; margin: 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999;
+}
+.nav-dropdown-wrap.open .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu li a {
+  display: block; padding: 0.5rem 1rem;
+  font-family: 'DM Mono', monospace; font-size: 0.78rem; color: #94a3b8;
+  text-decoration: none; white-space: nowrap; transition: color 0.15s, background 0.15s;
+}
+.nav-dropdown-menu li a:hover { color: #e879f9; background: rgba(232,121,249,0.06); }
+.mobile-nav-section-label {
+  font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #e879f9; padding: 0.75rem 1.5rem 0.25rem; opacity: 0.8;
+}
+.mobile-nav-sub { padding-left: 2rem !important; font-size: 0.82rem !important; color: #64748b !important; }
+.mobile-nav-sub:hover { color: #e879f9 !important; }
+</style>

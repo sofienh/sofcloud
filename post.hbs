@@ -2,7 +2,12 @@
 
 <main class="site-content">
   {{#post}}
-  <a href="{{@site.url}}" class="back-link">← Retour au blog</a>
+  <a href="{{@site.url}}" class="back-link" id="back-link">← Retour au blog</a>
+  <script>
+  if (/^\/lab-notes-/.test(window.location.pathname)) {
+    document.getElementById('back-link').href = '/tag/lab-notes/';
+  }
+  </script>
 
   <article>
     <header class="post-header">

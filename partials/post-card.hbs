@@ -14,7 +14,7 @@
   {{#if tags}}
   <div class="post-card-tags">
     {{#foreach tags limit="3"}}
-    <span class="post-tag">#{{name}}</span>
+    <span class="post-tag" data-tag="{{slug}}">#{{name}}</span>
     {{/foreach}}
   </div>
   {{/if}}

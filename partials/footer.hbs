@@ -12,8 +12,40 @@
   </div>
   <p class="footer-rgpd">
     🔒 Site conforme <strong>RGPD</strong> — Aucun cookie tiers sans votre consentement
-    · <a href="javascript:void(0)" onclick="document.getElementById('rgpd-banner').classList.add('visible')">Gérer mes préférences</a>
+    · <a href="#rgpd-banner" onclick="document.getElementById('rgpd-banner').classList.add('visible'); return false;">Gérer mes préférences</a>
   </p>
+  <details class="footer-credits">
+    <summary>Crédits &amp; Open Source</summary>
+    <ul>
+      <li>CMS : <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a> (open source, MIT)</li>
+      <li>Chatbot : <a href="https://flowiseai.com" target="_blank" rel="noopener">Flowise</a> (open source, Apache 2.0)</li>
+      <li>Typo : <a href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">DM Sans</a> &amp; <a href="https://fonts.google.com/specimen/DM+Mono" target="_blank" rel="noopener">DM Mono</a> (OFL)</li>
+      <li>Illustrations SVG — <a href="https://freesvg.org" target="_blank" rel="noopener">freesvg.org</a> (domaine public) :
+        <a href="https://freesvg.org/full-moon" target="_blank" rel="noopener">Full Moon</a>,
+        <a href="https://freesvg.org/planet-mars-vector-image" target="_blank" rel="noopener">Mars</a>,
+        <a href="https://freesvg.org/blue-planet-earth" target="_blank" rel="noopener">Blue Planet</a>,
+        <a href="https://freesvg.org/callisto" target="_blank" rel="noopener">Callisto</a>,
+        <a href="https://freesvg.org/neptune-by-merlin2525" target="_blank" rel="noopener">Neptune</a>,
+        <a href="https://freesvg.org/vector-illustration-of-planet-venus-in-color" target="_blank" rel="noopener">Venus</a>,
+        <a href="https://freesvg.org/strange-planet" target="_blank" rel="noopener">Strange Planet</a>
+      </li>
+      <li>Illustrations SVG — <a href="https://k40lasercutter.com" target="_blank" rel="noopener">k40lasercutter.com</a> :
+        <a href="https://k40lasercutter.com/product/free-astronaut-and-planet-svg-black-and-white-svg-vector-file-for-laser-cutting-2/" target="_blank" rel="noopener">Astronaute &amp; planète</a>,
+        <a href="https://k40lasercutter.com/product/free-astronaut-clipart-svg-black-and-white-svg-vector-file-for-laser-cutting-4/" target="_blank" rel="noopener">Astronaute clipart</a>
+      </li>
+      <li>Infrastructure :
+        <a href="https://www.docker.com" target="_blank" rel="noopener">Docker</a>,
+        <a href="https://nginx.org" target="_blank" rel="noopener">Nginx</a>,
+        <a href="https://www.wireguard.com" target="_blank" rel="noopener">WireGuard</a>,
+        <a href="https://www.crowdsec.net" target="_blank" rel="noopener">CrowdSec</a>,
+        <a href="https://grafana.com" target="_blank" rel="noopener">Grafana</a>,
+        <a href="https://prometheus.io" target="_blank" rel="noopener">Prometheus</a>,
+        <a href="https://grafana.com/oss/loki/" target="_blank" rel="noopener">Loki</a>,
+        <a href="https://portainer.io" target="_blank" rel="noopener">Portainer</a>,
+        <a href="https://nginxproxymanager.com" target="_blank" rel="noopener">Nginx Proxy Manager</a>
+      </li>
+    </ul>
+  </details>
 </footer>
 
 <!-- RGPD Cookie Banner -->
@@ -28,33 +60,67 @@
 </div>
 
 <script>
-var GTM_ID = 'GTM-XXXXXXX'; // Remplacer par votre ID GTM
-
-function loadGTM() {
-  if (window._gtmLoaded) return;
-  window._gtmLoaded = true;
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-  var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-  j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-  f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',GTM_ID);
-}
-
 (function() {
   var consent = localStorage.getItem('rgpd-consent');
   if (!consent) {
     document.getElementById('rgpd-banner').classList.add('visible');
-  } else if (consent === 'accepted') {
-    loadGTM();
   }
 })();
 
 function rgpdAccept() {
   localStorage.setItem('rgpd-consent', 'accepted');
   document.getElementById('rgpd-banner').classList.remove('visible');
-  loadGTM();
 }
 function rgpdRefuse() {
   localStorage.setItem('rgpd-consent', 'refused');
   document.getElementById('rgpd-banner').classList.remove('visible');
 }
+</script>
+
+<!-- Aria-label SofBot — inline, actif dès le chargement -->
+<script>
+(function() {
+  var LABEL = 'Ouvrir SofBot';
+  function _apply(sr) {
+    var btn = sr.querySelector('button[part="button"]');
+    if (btn && btn.getAttribute('aria-label') !== LABEL) btn.setAttribute('aria-label', LABEL);
+  }
+  function _watch(host) {
+    var sr = host.shadowRoot;
+    if (!sr || sr._sofwatched) return;
+    sr._sofwatched = true;
+    _apply(sr);
+    new MutationObserver(function() { _apply(sr); }).observe(sr, { childList: true, subtree: true });
+  }
+  new MutationObserver(function(muts) {
+    muts.forEach(function(m) {
+      m.addedNodes.forEach(function(n) {
+        if (n.nodeType !== 1) return;
+        if (n.shadowRoot) _watch(n);
+        var els = n.querySelectorAll('*');
+        for (var i = 0; i < els.length; i++) { if (els[i].shadowRoot) _watch(els[i]); }
+      });
+    });
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+
+<!-- SofBot — chargé après première interaction (lazy) -->
+<script>
+(function() {
+  var _loaded = false;
+  function _load() {
+    if (_loaded) return; _loaded = true;
+    window._sofLoad = null;
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.src = '{{asset "js/sofbot.js"}}';
+    document.body.appendChild(s);
+  }
+  window._sofLoad = _load;
+  ['click','touchstart','keydown'].forEach(function(e) {
+    window.addEventListener(e, _load, { once: true, passive: true });
+  });
+  setTimeout(_load, 4000);
+})();
 </script>

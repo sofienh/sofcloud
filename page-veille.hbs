@@ -4,7 +4,23 @@
   --accent: #fb923c; --accent-light: #fdba74; --accent-dim: rgba(251,146,60,0.1);
   --border: #2d1a08; --surface: #1a0e04; --surface2: #1f1108;
 }
+.sc-page-stars { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.sc-planet-wrap { position: fixed; right: -8vw; top: 6vh; z-index: 1; pointer-events: none; }
+.sc-planet {
+  display: block; width: 38vw; max-width: 500px; opacity: 0.5;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
+  animation: planet-drift 15s ease-in-out infinite;
+}
+@keyframes planet-drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.site-content { position: relative; z-index: 2; }
 </style>
+
+<canvas class="sc-page-stars" aria-hidden="true"></canvas>
+<div class="sc-planet-wrap" aria-hidden="true">
+  <img src="{{asset "planet-mars.webp"}}" class="sc-planet" alt="">
+</div>
+
 <main class="site-content">
   <a href="{{@site.url}}" class="back-link">← Retour</a>
 
@@ -12,51 +28,57 @@
     <div class="section-label">04 — Veille Sécurité</div>
   </div>
 
-  <div id="veille-sources" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+  <div id="veille-sources" class="veille-sources">
     <button class="veille-filter active" data-filter="all" data-color="#fb923c">Tous</button>
-    <button class="veille-filter" data-filter="fuite"     data-color="#ef4444">FrenchBreaches — Fuites</button>
-    <button class="veille-filter" data-filter="blog"      data-color="#3b82f6">FrenchBreaches — Blog</button>
+    <button class="veille-filter" data-filter="lmi"       data-color="#ef4444">LeMondeinformatique</button>
+    <button class="veille-filter" data-filter="itconnect" data-color="#3b82f6">IT-Connect</button>
     <button class="veille-filter" data-filter="zataz"     data-color="#10b981">Zataz</button>
     <button class="veille-filter" data-filter="certfr"    data-color="#a855f7">CERT-FR</button>
     <button class="veille-filter" data-filter="undernews" data-color="#f97316">Undernews</button>
+    <button class="veille-filter" data-filter="korben"    data-color="#facc15">Korben</button>
   </div>
 
-  <div id="veille-meta" style="font-family:var(--mono,'DM Mono',monospace);font-size:0.72rem;color:#64748b;margin-bottom:1.5rem;"></div>
+  <div id="veille-meta" class="veille-meta"></div>
   <div id="veille-grid" class="veille-grid"></div>
-  <div id="veille-loading" style="text-align:center;padding:3rem;color:#64748b;font-family:var(--mono,'DM Mono',monospace);font-size:0.85rem;">Chargement des flux…</div>
+  <div id="veille-loading" class="veille-loading">Chargement des flux…</div>
 </main>
 
 <style>
+.veille-sources { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.veille-meta { font-family: var(--mono, 'DM Mono', monospace); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+.veille-loading { text-align: center; padding: 3rem; color: var(--text-muted); font-family: var(--mono, 'DM Mono', monospace); font-size: 0.85rem; }
 .veille-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
 .veille-card {
-  background: #0f1a14; border: 1px solid #1a2d22; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
   padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;
   transition: border-color 0.2s;
 }
-.veille-card:hover { border-color: rgba(16,185,129,0.3); }
+.veille-card:hover { border-color: var(--accent-dim); }
 .veille-card-header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .veille-badge {
-  font-family: 'DM Mono', monospace; font-size: 0.65rem; text-transform: uppercase;
+  font-family: var(--mono, 'DM Mono', monospace); font-size: 0.65rem; text-transform: uppercase;
   letter-spacing: 0.08em; padding: 0.15rem 0.5rem; border-radius: 4px;
 }
-.badge-fuite     { background: rgba(239,68,68,0.1);    color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
-.badge-blog      { background: rgba(59,130,246,0.1);   color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+/* Couleurs de badge intentionnellement fixes — identité visuelle par source */
+.badge-lmi       { background: rgba(239,68,68,0.1);    color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+.badge-itconnect { background: rgba(59,130,246,0.1);   color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
 .badge-zataz     { background: rgba(16,185,129,0.1);   color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
 .badge-certfr    { background: rgba(168,85,247,0.1);   color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
 .badge-undernews { background: rgba(249,115,22,0.1);   color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
-.veille-date { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: #64748b; }
+.badge-korben    { background: rgba(250,204,21,0.1);   color: #facc15; border: 1px solid rgba(250,204,21,0.3); }
+.veille-date { font-family: var(--mono, 'DM Mono', monospace); font-size: 0.7rem; color: var(--text-muted); }
 .veille-title a {
-  font-weight: 600; font-size: 0.92rem; color: #f1f5f9;
+  font-weight: 600; font-size: 0.92rem; color: var(--text);
   text-decoration: none; line-height: 1.4;
 }
-.veille-title a:hover { color: #10b981; }
-.veille-summary { font-size: 0.82rem; color: #64748b; line-height: 1.65; flex: 1; }
+.veille-title a:hover { color: var(--accent); }
+.veille-summary { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; flex: 1; }
 .veille-filter {
-  font-family: 'DM Mono', monospace; font-size: 0.72rem; padding: 0.3rem 0.75rem;
-  border-radius: 6px; border: 1px solid #1a2d22; background: #0f1a14;
-  color: #64748b; cursor: pointer; transition: all 0.15s;
+  font-family: var(--mono, 'DM Mono', monospace); font-size: 0.72rem; padding: 0.3rem 0.75rem;
+  border-radius: 6px; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-muted); cursor: pointer; transition: all 0.15s;
 }
-.veille-filter:hover, .veille-filter.active { border-color: #fb923c; color: #fb923c; }
+.veille-filter:hover, .veille-filter.active { border-color: var(--accent); color: var(--accent); }
 </style>
 
 <script>
@@ -76,9 +98,7 @@
   }
 
   function esc(str) {
-    var d = document.createElement('div');
-    d.textContent = str || '';
-    return d.innerHTML;
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
   function safeUrl(url) {
     try {
@@ -88,7 +108,7 @@
   }
 
   function render(articles) {
-    if (!articles.length) { grid.innerHTML = '<p style="color:#64748b;font-size:0.9rem;">Aucun article.</p>'; return; }
+    if (!articles.length) { grid.innerHTML = '<p class="veille-loading">Aucun article.</p>'; return; }
     grid.innerHTML = articles.map(function(a) {
       return '<div class="veille-card">'
         + '<div class="veille-card-header">'
@@ -106,7 +126,7 @@
     document.querySelectorAll('.veille-filter').forEach(function(btn) {
       var isActive = btn.dataset.filter === f;
       btn.classList.toggle('active', isActive);
-      var c = btn.dataset.color || '#06b6d4';
+      var c = btn.dataset.color || getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
       btn.style.borderColor = isActive ? c : '';
       btn.style.color = isActive ? c : '';
     });
@@ -121,7 +141,9 @@
     .then(function(r) { return r.json(); })
     .then(function(data) {
       loading.style.display = 'none';
-      allArticles = data.articles || [];
+      allArticles = (data.articles || []).sort(function(a, b) {
+        return new Date(b.published || 0) - new Date(a.published || 0);
+      });
       var d = new Date(data.updated);
       meta.textContent = 'Dernière mise à jour : ' + d.toLocaleString('fr-FR') + ' — ' + allArticles.length + ' articles';
       render(allArticles);
@@ -129,5 +151,30 @@
     .catch(function() {
       loading.textContent = 'Impossible de charger les flux. Réessayez plus tard.';
     });
+})();
+</script>
+
+<script>
+(function() {
+  var c = document.querySelector('.sc-page-stars');
+  if (!c) return;
+  var ctx = c.getContext('2d'), stars = [], W, H;
+  function resize() { W = c.width = window.innerWidth; H = c.height = window.innerHeight; }
+  function init() {
+    stars = [];
+    for (var i = 0; i < 150; i++)
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.2+0.2, o: Math.random()*0.6+0.15, do: (Math.random()-0.5)*0.008 });
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (var i=0; i<stars.length; i++) {
+      var s=stars[i]; s.o+=s.do; if(s.o>0.85||s.o<0.1) s.do*=-1;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', function(){ resize(); init(); });
+  resize(); init(); draw();
 })();
 </script>
