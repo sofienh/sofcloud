@@ -951,3 +951,30 @@ h1.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: no
   .page-projets .exp-item { display: block; margin-bottom: 0; }
   .page-projets .exp-content { height: 100%; }
 }
+
+/* ============================================================ À PROPOS — PRÉSENTATION */
+.page-a-propos .ap-intro {
+  display: grid; grid-template-columns: 160px 1fr; gap: 2.75rem; align-items: start;
+  max-width: 960px; margin: 0.5rem 0 4.5rem;
+}
+.page-a-propos .ap-photo {
+  width: 160px; height: 160px; border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--accent); box-shadow: 0 0 0 6px rgba(34,211,238,0.08);
+}
+.page-a-propos .ap-text h2 {
+  font-family: var(--mono); font-size: 0.8rem; font-weight: 400; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.15em; margin: 2.25rem 0 0.9rem;
+}
+.page-a-propos .ap-text h2:first-child { margin-top: 0.4rem; }
+.page-a-propos .ap-text p, .page-a-propos .ap-text li { color: var(--text-soft); font-size: 1.02rem; line-height: 1.85; }
+.page-a-propos .ap-text p + p { margin-top: 0.9rem; }
+.page-a-propos .ap-text ul { padding-left: 1.2rem; }
+.page-a-propos .ap-text li + li { margin-top: 0.5rem; }
+.page-a-propos .ap-text strong { color: var(--text); font-weight: 600; }
+.page-a-propos .ap-text a { color: var(--accent); text-underline-offset: 3px; }
+@media (max-width: 700px) {
+  .page-a-propos .ap-intro { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+  .page-a-propos .ap-photo { width: 120px; height: 120px; }
+}
+/* « Me contacter » mène au formulaire, sous la barre de navigation fixe */
+.page-a-propos #contact { scroll-margin-top: 90px; }
