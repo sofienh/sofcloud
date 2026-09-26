@@ -63,7 +63,7 @@ Le zip peut aussi être importé depuis Ghost Admin : Réglages → Design → C
 
 Widget chatbot intégré via [Flowise](https://flowiseai.com) :
 
-- **LLM** : Llama 3.3 70B via l'API Groq
+- **LLM** : `openai/gpt-oss-120b` via l'API Groq (Llama 3.3 70B jusqu'en avril 2026)
 - **RAG** : base vectorielle Faiss + embeddings HuggingFace (`paraphrase-multilingual-MiniLM-L12-v2`)
 - **Sources** : pages du portfolio, récupérées avec Cheerio
 - **Hébergement** : conteneur Docker `flowise` (image construite localement), exposé sur `bot.sofcloud.org`
