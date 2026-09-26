@@ -25,7 +25,7 @@
   <a href="{{@site.url}}" class="back-link">← Retour</a>
 
   <div class="page-header">
-    <div class="section-label">04 — Veille Sécurité</div>
+    <h1 class="section-label">04 — Veille Sécurité</h1>
   </div>
 
   <div id="veille-sources" class="veille-sources">
@@ -36,10 +36,12 @@
     <button class="veille-filter" data-filter="certfr"    data-color="#a855f7">CERT-FR</button>
     <button class="veille-filter" data-filter="undernews" data-color="#f97316">Undernews</button>
     <button class="veille-filter" data-filter="korben"    data-color="#facc15">Korben</button>
+    <button class="veille-filter" data-filter="frenchbreaches" data-color="#ec4899">FrenchBreaches</button>
   </div>
 
   <div id="veille-meta" class="veille-meta"></div>
   <div id="veille-grid" class="veille-grid"></div>
+  <div class="veille-more-wrap"><button id="veille-more" class="veille-more" type="button" hidden>Voir plus</button></div>
   <div id="veille-loading" class="veille-loading">Chargement des flux…</div>
 </main>
 
@@ -47,6 +49,12 @@
 .veille-sources { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .veille-meta { font-family: var(--mono, 'DM Mono', monospace); font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1.5rem; }
 .veille-loading { text-align: center; padding: 3rem; color: var(--text-muted); font-family: var(--mono, 'DM Mono', monospace); font-size: 0.85rem; }
+.veille-more-wrap { display: flex; justify-content: center; margin-top: 2rem; }
+.veille-more {
+  font-family: var(--mono); font-size: 0.85rem; color: var(--accent); background: transparent;
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 1.4rem; cursor: pointer;
+}
+.veille-more:hover { border-color: var(--accent); }
 .veille-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
 .veille-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
@@ -66,6 +74,7 @@
 .badge-certfr    { background: rgba(168,85,247,0.1);   color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
 .badge-undernews { background: rgba(249,115,22,0.1);   color: #f97316; border: 1px solid rgba(249,115,22,0.3); }
 .badge-korben    { background: rgba(250,204,21,0.1);   color: #facc15; border: 1px solid rgba(250,204,21,0.3); }
+.badge-frenchbreaches { background: rgba(236,72,153,0.1); color: #ec4899; border: 1px solid rgba(236,72,153,0.3); }
 .veille-date { font-family: var(--mono, 'DM Mono', monospace); font-size: 0.7rem; color: var(--text-muted); }
 .veille-title a {
   font-weight: 600; font-size: 0.92rem; color: var(--text);
@@ -107,9 +116,18 @@
     } catch(e) { return '#'; }
   }
 
-  function render(articles) {
+  var PAGE = 24, shown = PAGE, current = [];
+  var more = document.getElementById('veille-more');
+  more.addEventListener('click', function() { shown += PAGE; draw(); });
+
+  function render(articles) { current = articles; shown = PAGE; draw(); }
+
+  function draw() {
+    var articles = current;
+    more.hidden = articles.length <= shown;
+    more.textContent = 'Voir plus (' + (articles.length - shown) + ' restants)';
     if (!articles.length) { grid.innerHTML = '<p class="veille-loading">Aucun article.</p>'; return; }
-    grid.innerHTML = articles.map(function(a) {
+    grid.innerHTML = articles.slice(0, shown).map(function(a) {
       return '<div class="veille-card">'
         + '<div class="veille-card-header">'
         + '<span class="veille-badge badge-' + esc(a.badge) + '">' + esc(a.source) + '</span>'
@@ -172,9 +190,9 @@
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
       ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
     }
-    requestAnimationFrame(draw);
+    if (!window.sofStill) sofNext(c, draw);
   }
-  window.addEventListener('resize', function(){ resize(); init(); });
+  window.addEventListener('resize', function(){ resize(); init(); if (window.sofStill) draw(); });
   resize(); init(); draw();
 })();
 </script>

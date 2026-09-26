@@ -125,10 +125,13 @@ body {
 .sc-space-banner {
   position: relative;
   width: 100%;
-  margin-top: -265px;
+  margin-top: -340px;
   height: min(56.25vw, 780px);
   overflow: hidden;
   z-index: 1;
+  /* fondu en haut : le bord de l'image ne se voit jamais au-dessus du bloc Kuma */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 70px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 70px);
 }
 #banner-stars {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;
@@ -137,18 +140,20 @@ body {
 .sc-banner-scaler {
   position: relative; z-index: 1;
   width: 100%; height: 100%;
-  transform: scale(1.25);
+  transform: scale(0.92); /* l'astronaute tient entier dans le bandeau (tête et pieds) */
 }
 .sc-space-banner img {
   width: 100%; height: 100%;
   object-fit: contain; object-position: center center;
   display: block; opacity: 0.9;
   filter: invert(1);
-  animation: space-drift 10s ease-in-out infinite;
+  animation: space-drift 16s ease-in-out infinite;
 }
+/* flottement : monte, dérive et pivote légèrement */
 @keyframes space-drift {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-6px); }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33%       { transform: translate(5px, -12px) rotate(1.2deg); }
+  66%       { transform: translate(-4px, -6px) rotate(-0.8deg); }
 }
 
 /* ── Étoiles bas de page (homepage) ── */
@@ -188,17 +193,15 @@ body {
   width: 28px; height: 28px;
   border-color: var(--accent);
   border-style: solid;
-  opacity: 0;
-  will-change: opacity;
-  animation: hg-corner-in 0.8s ease forwards, hg-corner-pulse 4s ease-in-out 0.8s infinite;
+  opacity: 0.55;
+  /* une seule animation d'opacité (deux sur la même propriété empêchaient
+     le navigateur de la confier à la carte graphique) */
+  animation: hg-corner-pulse 4s ease-in-out infinite;
 }
-.hg-tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; animation-delay: 0.1s, 0.9s; }
-.hg-tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; animation-delay: 0.3s, 1.1s; }
-.hg-bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; animation-delay: 0.2s, 1.0s; }
-.hg-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; animation-delay: 0.4s, 1.2s; }
-@keyframes hg-corner-in {
-  from { opacity: 0; } to { opacity: 0.55; }
-}
+.hg-tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; animation-delay: 0.1s; }
+.hg-tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; animation-delay: 0.3s; }
+.hg-bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; animation-delay: 0.2s; }
+.hg-br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; animation-delay: 0.4s; }
 @keyframes hg-corner-pulse {
   0%, 100% { opacity: 0.55; } 50% { opacity: 1; }
 }
@@ -255,26 +258,49 @@ body {
   opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
 }
 .hero-badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+.hero-kicker {
+  font-family: var(--mono); font-size: 0.8rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.6rem;
+  opacity: 0; animation: fadeUp 0.6s 0.15s forwards;
+}
 .hero-name {
   font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; line-height: 1.1;
-  letter-spacing: -0.03em; margin-bottom: 0.5rem;
+  letter-spacing: -0.03em; margin-bottom: 0.9rem;
   opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
 }
 .hero-title {
-  font-size: 1.1rem; color: var(--text-soft); margin-bottom: 1.5rem; font-weight: 400;
+  font-size: 1.1rem; color: var(--text-soft); margin-bottom: 1.1rem; font-weight: 400;
   opacity: 0; animation: fadeUp 0.6s 0.3s forwards;
 }
 .hero-title strong { color: var(--accent-light); font-weight: 500; }
 .hero-tagline {
   font-family: var(--mono, 'DM Mono', monospace); font-size: 0.82rem;
-  color: var(--accent); letter-spacing: 0.03em; margin-bottom: 1.5rem; margin-top: -1rem;
+  color: var(--accent); letter-spacing: 0.03em; margin-bottom: 2.25rem;
   opacity: 0; animation: fadeUp 0.6s 0.35s forwards;
 }
 .hero-bio {
-  font-size: 1.02rem; color: var(--text-muted); line-height: 1.8; max-width: 520px;
-  margin-bottom: 2.5rem;
+  font-size: 1.02rem; color: var(--text-muted); line-height: 1.85; max-width: 40rem;
+  margin-bottom: 2.75rem;
   opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
 }
+.hero-bio span { display: block; text-wrap: pretty; }
+.hero-bio a { color: var(--accent-light); text-decoration: underline; text-decoration-color: rgba(52,211,153,0.4); text-underline-offset: 3px; }
+.hero-bio a:hover { text-decoration-color: currentColor; }
+/* Chiffres clés sur mobile (le carré de droite y est masqué) */
+.hero-stats-mobile { display: none; }
+@media (max-width: 900px) {
+  .hero-stats-mobile {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+    list-style: none; padding: 0; margin: 2rem 0 0;
+    opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
+  }
+  .hero-stats-mobile li, .hero-stats-mobile a {
+    font-family: var(--mono); font-size: 0.78rem; color: var(--text-muted); text-decoration: none;
+  }
+  .hero-stats-mobile li { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 0.8rem; }
+  .hero-stats-mobile strong { display: block; font-family: var(--sans, inherit); font-size: 1.2rem; font-weight: 600; color: var(--accent-light); line-height: 1.2; }
+}
+.hero-bio span + span { margin-top: 0.6rem; }
 .hero-actions {
   display: flex; gap: 0.75rem; flex-wrap: wrap;
   opacity: 0; animation: fadeUp 0.6s 0.5s forwards;
@@ -308,6 +334,8 @@ body {
 .hero-card-role { font-size: 0.8rem; color: var(--text-muted); font-family: var(--mono); margin-bottom: 1.5rem; }
 .hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
 .card-stat { background: var(--bg); border-radius: var(--radius); padding: 0.75rem; }
+.card-stat-link { display: block; text-decoration: none; border: 1px solid transparent; transition: border-color 0.15s; }
+.card-stat-link:hover { border-color: rgba(251,113,133,0.5); }
 .card-stat-num { font-size: 1.3rem; font-weight: 600; color: var(--accent-light); line-height: 1; }
 .card-stat-label { font-size: 0.75rem; color: var(--text-muted); font-family: var(--mono); margin-top: 0.25rem; }
 .hero-card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -319,7 +347,7 @@ body {
 @media (min-width: 641px) and (max-width: 1439px) {
   :root { --kuma-chart-h: 120px; }
   .sc-space-banner { margin-top: -200px; }
-  .sc-banner-scaler { transform: scale(1.1); }
+  .sc-banner-scaler { transform: scale(0.92); }
 }
 @media (min-width: 1440px) {
   :root { --layout-max: 1700px; --kuma-chart-h: 150px; }
@@ -336,7 +364,7 @@ body {
   .hero-name { font-size: 2.9rem; }
   .hero-title { font-size: 1.35rem; }
   .hero-tagline { font-size: 1rem; }
-  .hero-bio { font-size: 1.2rem; max-width: 640px; }
+  .hero-bio { font-size: 1.2rem; max-width: 50rem; }
   /* Zone 2 — hero card droite */
   .sc-hero-card { padding: 2.5rem; }
   .hero-card-name { font-size: 1.3rem; }
@@ -878,3 +906,48 @@ body {
 .post-template.tag-lab-notes .post-content table { margin: 2rem 0 2.5rem; }
 .post-template.tag-lab-notes .post-content table td { font-family: var(--sans); font-size: 0.95rem; line-height: 1.6; padding-top: 0.8rem; padding-bottom: 0.8rem; }
 .post-template.tag-lab-notes .post-content table td:first-child { font-family: var(--mono); font-size: 0.85rem; color: var(--accent-light); }
+
+/* ============================================================ MOINS D'ANIMATIONS
+   Réglage « réduire les animations » du système : tout s'affiche directement,
+   sans fondu ni mouvement (les étoiles sont figées côté JS via window.sofStill). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================ ACCUEIL — DERNIÈRES LAB NOTES
+   Après l'astronaute, remontée par une marge négative sur le bas de l'image
+   (moins de défilement, l'astronaute reste en décor derrière). */
+.sc-home-notes {
+  max-width: var(--layout-max); margin: -80px auto 0; padding: 0 var(--layout-pad);
+  position: relative; z-index: 2;
+}
+@media (max-width: 640px) {
+  .sc-home-notes { margin-top: -4%; }
+  .sc-home-notes .post-card:nth-child(n+3) { display: none; } /* 2 notes suffisent sur mobile */
+}
+.sc-home-notes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+.sc-home-notes .post-card { background: #060b09; }
+.sc-home-notes + .sc-stars-bottom { height: 90px; margin-top: 0; }
+@media (max-width: 1000px) { .sc-home-notes-grid { grid-template-columns: 1fr; } }
+
+/* ============================================================ CORRECTIFS PAGES (2026-09-26) */
+/* Les étiquettes de section deviennent le h1 de la page : même rendu qu'avant */
+h1.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: normal; }
+/* Un mot très long (ER_FK_INCOMPATIBLE_COLUMNS…) ne sort plus de sa carte */
+.post-card-title { overflow-wrap: anywhere; }
+/* Expériences et Projets : colonne plus large, texte plus lisible */
+.page-experiences .exp-timeline, .page-projets .exp-timeline { max-width: 1100px; }
+.page-experiences .exp-desc, .page-projets .exp-desc { color: var(--text-soft); font-size: 0.95rem; }
+/* Projets : réalisations clients en deux colonnes sur grand écran (22 cartes) */
+@media (min-width: 1100px) {
+  .page-projets .exp-timeline { max-width: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem 1.5rem; }
+  .page-projets .exp-timeline::before, .page-projets .exp-dot { display: none; }
+  .page-projets .exp-item { display: block; margin-bottom: 0; }
+  .page-projets .exp-content { height: 100%; }
+}

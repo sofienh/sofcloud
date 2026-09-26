@@ -24,8 +24,9 @@ Thème Ghost sombre, écrit sur mesure pour [sofcloud.org](https://sofcloud.org)
 ## Fonctionnalités
 
 - **Pages dédiées** : `page-<slug>.hbs` (à propos, compétences, expériences, projets, veille…), choisi automatiquement par Ghost d'après l'adresse de la page
+- **Accueil** : chiffres clés (le nombre de lab notes est compté par Ghost), dernières lab notes, astronaute flottant derrière le statut de l'infrastructure
 - **Statut de l'infrastructure** sur l'accueil : `kuma-status.json` (généré depuis Uptime Kuma), rechargé sans cache
-- **Veille sécurité** : flux RSS de 6 sources (LeMondeInformatique, IT-Connect, Zataz, CERT-FR, Undernews, Korben), filtrables par source. Les contenus externes sont échappés (`esc()`) et les liens validés (`safeUrl()`)
+- **Veille sécurité** : flux RSS de 7 sources (LeMondeInformatique, IT-Connect, Zataz, CERT-FR, Undernews, Korben, FrenchBreaches), filtrables par source. Les contenus externes sont échappés (`esc()`) et les liens validés (`safeUrl()`)
 - **Lab Notes** : route `/lab-notes/` (gabarit `tag-lab-notes.hbs`, 16 par page)
   - titre `Lab Notes #NN — Sujet` affiché en deux lignes (numéro au-dessus), sur l'article et les cartes
   - mise en page aérée réservée aux articles tagués `lab-notes` (colonne centrée de 820 px)
@@ -39,7 +40,9 @@ Thème Ghost sombre, écrit sur mesure pour [sofcloud.org](https://sofcloud.org)
     ```
 - **SofBot** : chatbot chargé en différé (premier clic ou touche, sinon après 4 s), couleur selon la page
 - **Consentement RGPD** : aucun script Google ni cookie avant un clic sur « Accepter » ; « Refuser » révoque le consentement et supprime les cookies `_ga*`
-- Temps de lecture en français, bouton retour en haut, navigation responsive
+- **Veille** : 24 articles puis bouton « Voir plus »
+- **Accessibilité** : un `h1` par page, réglage « réduire les animations » respecté (étoiles figées, sans fondu), étoiles en pause hors de l'écran
+- Temps de lecture et pagination en français, bouton retour en haut, navigation responsive
 
 ## Déploiement
 

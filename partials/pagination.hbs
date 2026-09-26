@@ -1,0 +1,10 @@
+{{!-- Pagination en français (remplace celle de Ghost, en anglais) --}}
+<nav class="pagination" role="navigation" aria-label="Pagination">
+  {{#if prev}}
+    <a class="newer-posts" href="{{page_url prev}}">&larr; Plus récents</a>
+  {{/if}}
+  <span class="page-number">Page {{page}} sur {{pages}}</span>
+  {{#if next}}
+    <a class="older-posts" href="{{page_url next}}">Plus anciens &rarr;</a>
+  {{/if}}
+</nav>

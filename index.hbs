@@ -2,7 +2,7 @@
 
 <section class="sc-hero">
   <div class="sc-planet-home" aria-hidden="true">
-    <img src="{{asset "full-moon.svg"}}" class="sc-planet-moon" alt="" width="135" height="135">
+    <img src="{{asset "full-moon.webp"}}" srcset="{{asset "full-moon-280.webp"}} 280w, {{asset "full-moon.webp"}} 880w" sizes="(max-width: 640px) 120px, min(34vw, 440px)" class="sc-planet-moon" alt="" width="880" height="885">
   </div>
   <canvas id="hero-stars" aria-hidden="true"></canvas>
   <div class="hero-geo" aria-hidden="true">
@@ -13,17 +13,24 @@
   </div>
   <div class="sc-hero-inner">
     <div>
-      <h1 class="hero-name">SofCloud</h1>
-      <p class="hero-title">Soufiane H. &mdash; <strong>Responsable Informatique</strong></p>
-      <p class="hero-tagline">La cybers&#233;curit&#233; est avant tout une affaire d&#8217;humains.</p>
+      <p class="hero-kicker">SofCloud</p>
+      <h1 class="hero-name">Soufiane H.</h1>
+      <p class="hero-title"><strong>Responsable Informatique</strong></p>
+      <p class="hero-tagline">La cybers&#233;curit&#233; est avant tout une affaire humaine.</p>
       <p class="hero-bio">
-        14 ans d&#8217;exp&#233;rience dans les r&#233;seaux, infrastructures et cybers&#233;curit&#233;.
-        ERIS (Bac+4) &#8212; architecte de syst&#232;mes robustes, du c&#226;blage physique au cloud s&#233;curis&#233;.
+        <span>15 ans d&#8217;exp&#233;rience dans les r&#233;seaux, les infrastructures et la cybers&#233;curit&#233;. Je&nbsp;con&#231;ois, s&#233;curise et fais vivre des infrastructures, sur site comme dans le cloud.</span>
+        <span>Ce site tourne sur mon propre serveur, que j&#8217;administre de A &#224; Z et documente dans les <a href="/lab-notes/">Lab Notes</a>.</span>
       </p>
       <div class="hero-actions">
         <a href="/content/files/cv-soufiane-h.pdf" class="sc-btn sc-btn-outline" id="btn-cv" download>T&#233;l&#233;charger CV</a>
         <a href="/projets/" class="sc-btn sc-btn-ghost" id="btn-projets">Voir mes projets</a>
       </div>
+      <ul class="hero-stats-mobile">
+        <li><strong>15</strong> ans d&#8217;exp.</li>
+        <li><strong>Bac+4</strong> ERIS</li>
+        <li><strong>35+</strong> projets</li>
+        <li><a href="/lab-notes/"><strong>{{#get "posts" filter="tag:lab-notes" limit="1" fields="id"}}{{pagination.total}}{{/get}}</strong> lab notes</a></li>
+      </ul>
     </div>
     <div class="sc-hero-card">
       <div class="hero-card-avatar">
@@ -48,10 +55,10 @@
         </svg>
       </div>
       <div class="hero-card-name">Soufiane H.</div>
-      <div class="hero-card-role">ERIS &middot; Montpellier</div>
+      <div class="hero-card-role">Montpellier</div>
       <div class="hero-card-stats">
         <div class="card-stat">
-          <div class="card-stat-num">14</div>
+          <div class="card-stat-num">15</div>
           <div class="card-stat-label">ans exp.</div>
         </div>
         <div class="card-stat">
@@ -62,6 +69,10 @@
           <div class="card-stat-num">35+</div>
           <div class="card-stat-label">projets terrain</div>
         </div>
+        <a class="card-stat card-stat-link" href="/lab-notes/">
+          <div class="card-stat-num">{{#get "posts" filter="tag:lab-notes" limit="1" fields="id"}}{{pagination.total}}{{/get}}</div>
+          <div class="card-stat-label">lab notes</div>
+        </a>
       </div>
     </div>
   </div>
@@ -90,7 +101,7 @@
 <div class="sc-space-banner" aria-hidden="true">
   <canvas id="banner-stars"></canvas>
   <div class="sc-banner-scaler">
-    <img src="{{asset "astronaute.svg"}}" alt="" fetchpriority="high">
+    <img src="{{asset "astronaute.svg"}}" alt="" loading="lazy" decoding="async">
   </div>
 </div>
 <script>
@@ -113,9 +124,9 @@
         ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
       }
     }
-    requestAnimationFrame(draw);
+    if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>
@@ -123,10 +134,15 @@
 <style>
 .sc-planet-home { position: absolute; right: -4vw; top: 0; bottom: 0; display: flex; align-items: center; pointer-events: none; z-index: 0; overflow: hidden; clip-path: inset(0); }
 .sc-planet-moon {
-  display: block; width: 34vw; max-width: 440px; opacity: 0.28;
+  display: block; width: 34vw; max-width: 440px; height: auto; opacity: 0.28;
   mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 72%);
   animation: planet-drift-home 22s ease-in-out infinite;
+}
+/* mobile : lune plus petite, en haut à droite, pour ne plus passer sur le texte */
+@media (max-width: 640px) {
+  .sc-planet-home { align-items: flex-start; top: 0.5rem; right: -8vw; }
+  .sc-planet-moon { width: 120px; opacity: 0.2; }
 }
 @keyframes planet-drift-home { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .sc-status-section { max-width: var(--layout-max); margin: 0 auto; padding: 0 var(--layout-pad); position: relative; z-index: 2; }
@@ -173,7 +189,8 @@
   function drawChart(canvas, beats) {
     var W = canvas.parentElement.offsetWidth || 800;
     var accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#34d399';
-    var H = 120;
+    // hauteur réelle du cadre (100 à 170 px selon l'écran) : avec 120 fixe, les heures étaient coupées sur mobile
+    var H = canvas.parentElement.offsetHeight || 120;
     var dpr = window.devicePixelRatio || 1;
     canvas.width = W * dpr; canvas.height = H * dpr;
     canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -210,11 +227,17 @@
     ctx.textAlign = 'center';
     var maxLabels = Math.min(6, Math.max(2, Math.floor(cw / 75)));
     var step6 = Math.max(1, Math.floor(n / maxLabels));
+    var lastX = pad.left + (n - 1) * step;
     beats.forEach(function(b, i) {
-      if (i % step6 !== 0 && i !== n - 1) return;
+      var last = i === n - 1;
+      if (i % step6 !== 0 && !last) return;
+      var x = pad.left + i * step;
+      // pas de libellé trop près du dernier : ils se chevauchaient
+      if (!last && lastX - x < 60) return;
       var t = new Date(b.time.replace(' ', 'T') + 'Z');
       var lbl = t.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-      var x = pad.left + i * step;
+      // le dernier est aligné à droite pour ne pas être coupé par le bord
+      ctx.textAlign = last ? 'right' : 'center';
       ctx.fillText(lbl, x, H - 6);
     });
 
@@ -294,13 +317,25 @@
         ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
       }
     }
-    requestAnimationFrame(draw);
+    if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>
 
+
+<section class="sc-home-notes">
+  <div class="sc-status-label">
+    <span>Derni&#232;res lab notes</span>
+    <a href="/lab-notes/" class="sc-status-link">toutes les notes &#8599;</a>
+  </div>
+  <div class="sc-home-notes-grid">
+    {{#get "posts" filter="tag:lab-notes" limit="3" include="tags"}}
+      {{#foreach posts}}{{> "post-card"}}{{/foreach}}
+    {{/get}}
+  </div>
+</section>
 
 <div class="sc-stars-bottom" aria-hidden="true">
   <canvas id="stars-bottom"></canvas>
@@ -325,9 +360,9 @@
         ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
       }
     }
-    requestAnimationFrame(draw);
+    if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>

@@ -22,7 +22,7 @@
   {{#post}}
   <a href="{{@site.url}}" class="back-link">← Retour</a>
   <div class="page-header">
-    <div class="section-label">06 — À propos</div>
+    <h1 class="section-label">06 — À propos</h1>
   </div>
   <div class="gh-content">
     {{content}}
@@ -48,9 +48,9 @@
       ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
       ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')'; ctx.fill();
     }
-    requestAnimationFrame(draw);
+    if (!window.sofStill) sofNext(c, draw);
   }
-  window.addEventListener('resize', function(){ resize(); init(); });
+  window.addEventListener('resize', function(){ resize(); init(); if (window.sofStill) draw(); });
   resize(); init(); draw();
 })();
 </script>
