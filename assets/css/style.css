@@ -329,7 +329,7 @@ body {
   opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
 }
 .hero-card-avatar {
-  width: 72px; height: 72px; border-radius: 10px;
+  width: 104px; height: 104px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 1rem;
 }
