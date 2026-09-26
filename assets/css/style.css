@@ -86,6 +86,7 @@ body {
 .site-nav-left { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
 .nav-brand-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
 .nav-brand-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
+.nav-brand-accent { color: #8ec84e; }
 .site-nav-right { display: flex; align-items: center; gap: 0.25rem; }
 .nav-link {
   font-size: 0.9rem; color: var(--text-soft); text-decoration: none;
