@@ -197,8 +197,14 @@
     var ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
 
-    var pings = beats.map(function(b) { return b.ping; });
-    var max = Math.max.apply(null, pings.filter(function(p){ return p != null; })) || 1;
+    var pings = beats.map(function(b) { return b.ping; }).filter(function(p){ return p != null; });
+    var max = Math.max.apply(null, pings) || 1;
+    // Échelle calée sur les valeurs habituelles (2 × la médiane, arrondie à la dizaine) :
+    // un pic isolé (redémarrage…) dépasse en haut au lieu d'écraser toute la courbe.
+    var sorted = pings.slice().sort(function(a, b) { return a - b; });
+    var median = sorted.length ? sorted[Math.floor(sorted.length / 2)] : max;
+    var capped = max > median * 2;
+    if (capped) max = Math.ceil(median * 2 / 10) * 10;
     var pad = { top: 8, bot: 28, left: 40, right: 8 };
     var cw = W - pad.left - pad.right;
     var ch = H - pad.top - pad.bot;
@@ -219,7 +225,7 @@
     ctx.textAlign = 'right';
     [0, Math.round(max/2), Math.round(max)].forEach(function(v) {
       var y = pad.top + ch * (1 - v / max);
-      ctx.fillText(v, pad.left - 4, y + 3);
+      ctx.fillText(v === Math.round(max) && capped ? v + '+' : v, pad.left - 4, y + 3);
     });
 
     // Labels X (adaptatif selon largeur)
@@ -255,7 +261,7 @@
     beats.forEach(function(b, i) {
       if (b.ping == null) return;
       var x = pad.left + i * step;
-      var y = pad.top + ch * (1 - b.ping / max);
+      var y = pad.top + ch * (1 - Math.min(b.ping, max) / max);
       if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
     });
     ctx.strokeStyle = accentColor;
@@ -282,9 +288,17 @@
       document.getElementById('kuma-ping').textContent = data.ping != null ? data.ping : '—';
       document.getElementById('kuma-uptime24').textContent = data.uptime != null ? data.uptime + '%' : '—';
       if (beats.length) {
-        setTimeout(function() {
-          drawChart(document.getElementById('kuma-chart'), beats);
-        }, 100);
+        var chart = document.getElementById('kuma-chart'), lastW = 0, pending = false;
+        var redraw = function() {
+          pending = false;
+          var w = chart.parentElement.offsetWidth;
+          if (w && w !== lastW) { lastW = w; drawChart(chart, beats); }
+        };
+        setTimeout(redraw, 100);
+        // redessin quand la largeur change (rotation du téléphone, fenêtre redimensionnée)
+        if (window.ResizeObserver) new ResizeObserver(function() {
+          if (!pending) { pending = true; requestAnimationFrame(redraw); }
+        }).observe(chart.parentElement);
       }
     })
     .catch(function() { setStatus(true); });
