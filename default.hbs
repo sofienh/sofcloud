@@ -16,10 +16,20 @@
       });
       c.sofIO.observe(c);
     }
+    // Pendant le chargement : une seule image, l'animation démarre 2,5 s après « load »
+    // (moins de travail pendant que la page s'affiche)
+    if (!window.sofGo) { if (!c.sofHold) (window.sofHeld = window.sofHeld || []).push(c); c.sofHold = fn; return; }
     if (c.sofOff) c.sofWait = fn; else requestAnimationFrame(fn);
   };
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      window.sofGo = true;
+      document.documentElement.classList.add('sof-go');
+      (window.sofHeld || []).forEach(function (c) { var f = c.sofHold; c.sofHold = null; if (f) window.sofNext(c, f); });
+    }, 2500);
+  });
   </script>
-  {{ghost_head exclude="card_assets"}}
+  {{ghost_head exclude="card_assets,search"}}
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{asset "css/style.css"}}">

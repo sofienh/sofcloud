@@ -65,7 +65,8 @@
 html { scroll-behavior: smooth; font-size: 17px; background: var(--bg); }
 body {
   background: var(--bg);
-  animation: pageFadeIn 0.35s ease both;
+  /* pas de fondu sur toute la page : sous une opacité 0, Chrome ne compte aucun affichage
+     → PageSpeed échouait en NO_FCP / NO_LCP (2026-09-26) */
   color: var(--text);
   font-family: var(--sans);
   line-height: 1.6;
@@ -266,7 +267,9 @@ body {
 .hero-name {
   font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; line-height: 1.1;
   letter-spacing: -0.03em; margin-bottom: 0.9rem;
-  opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  /* aucune animation sur le nom et le paragraphe : ce sont les « plus grands éléments
+     affichés » (LCP). En fondu (opacité 0), Chrome ne les retient jamais ; en glissement,
+     Chrome 153 attend la fin du mouvement → PageSpeed mobile échouait en NO_LCP */
 }
 .hero-title {
   font-size: 1.1rem; color: var(--text-soft); margin-bottom: 1.1rem; font-weight: 400;
@@ -281,7 +284,6 @@ body {
 .hero-bio {
   font-size: 1.02rem; color: var(--text-muted); line-height: 1.85; max-width: 40rem;
   margin-bottom: 2.75rem;
-  opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
 }
 .hero-bio span { display: block; text-wrap: pretty; }
 .hero-bio a { color: var(--accent-light); text-decoration: underline; text-decoration-color: rgba(52,211,153,0.4); text-underline-offset: 3px; }
@@ -764,6 +766,7 @@ body {
 /* ============================================================ ANIMATIONS */
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+@keyframes riseUp { from { transform:translateY(20px); } to { transform:none; } }
 @keyframes pageFadeIn { from { opacity:0; } to { opacity:1; } }
 .fade-in { animation: fadeUp 0.5s ease forwards; }
 
@@ -978,3 +981,8 @@ h1.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: no
 }
 /* « Me contacter » mène au formulaire, sous la barre de navigation fixe */
 .page-a-propos #contact { scroll-margin-top: 90px; }
+
+/* Animations décoratives en pause pendant le chargement (classe .sof-go posée 2,5 s après « load »
+   par default.hbs) : la page s'affiche sans travail superflu, puis tout s'anime. */
+html:not(.sof-go) :is(.sc-planet, .sc-planet-moon, .sc-space-banner img, .hg-corner, .hg-scan, .hg-diamond, .hg-line,
+  .hero-badge-dot, .status-dot, .sc-status-dot) { animation-play-state: paused; }

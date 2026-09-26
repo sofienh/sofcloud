@@ -126,7 +126,7 @@
     }
     if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill || !window.sofGo) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>
@@ -333,7 +333,7 @@
     }
     if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill || !window.sofGo) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>
@@ -376,7 +376,7 @@
     }
     if (!window.sofStill) sofNext(c, draw);
   }
-  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill) draw(); }).observe(c.parentElement);
+  new ResizeObserver(function(e) { var r=e[0].contentRect; W=c.width=Math.round(r.width); H=c.height=Math.round(r.height); init(); if (window.sofStill || !window.sofGo) draw(); }).observe(c.parentElement);
   draw();
 })();
 </script>

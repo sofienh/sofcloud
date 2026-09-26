@@ -50,7 +50,7 @@
     }
     if (!window.sofStill) sofNext(c, draw);
   }
-  window.addEventListener('resize', function(){ resize(); init(); if (window.sofStill) draw(); });
+  window.addEventListener('resize', function(){ resize(); init(); if (window.sofStill || !window.sofGo) draw(); });
   resize(); init(); draw();
 })();
 </script>
