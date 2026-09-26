@@ -108,7 +108,7 @@ body {
 .sc-hero {
   min-height: auto;
   display: flex; align-items: center;
-  padding: 2.5rem 0 2rem;
+  padding: 2.25rem 0;  /* symétrique : contenu centré entre les coins du cadre */
   position: relative; overflow: hidden;
   background: var(--bg);
   z-index: 3;
@@ -249,7 +249,7 @@ body {
 }
 .sc-hero-inner {
   max-width: 1400px; margin: 0 auto; width: 100%;
-  display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: start;
+  display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: center;
   position: relative; z-index: 1; padding: 0 3rem;
 }
 .hero-badge {
@@ -370,7 +370,7 @@ body {
     grid-template-columns: 1fr 400px;
     gap: 7rem;
   }
-  .sc-hero { padding: 3.5rem 3rem 2.5rem; }
+  .sc-hero { padding: 3rem; }
   .sc-status-section { max-width: var(--layout-max); }
   /* Zone 3 — logo nav */
   .nav-brand-name { font-size: 1.2rem; }
