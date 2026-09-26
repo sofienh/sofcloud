@@ -333,6 +333,10 @@ body {
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 1rem;
 }
+/* Insigne à gauche, nom et ville à droite */
+.hero-card-id { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.hero-card-id .hero-card-avatar { margin-bottom: 0; flex-shrink: 0; }
+.hero-card-id .hero-card-role { margin-bottom: 0; }
 .hero-card-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; }
 .hero-card-role { font-size: 0.8rem; color: var(--text-muted); font-family: var(--mono); margin-bottom: 1.5rem; }
 .hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
