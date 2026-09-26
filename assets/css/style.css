@@ -944,7 +944,7 @@ body {
 
 /* ============================================================ CORRECTIFS PAGES (2026-09-26) */
 /* Les étiquettes de section deviennent le h1 de la page : même rendu qu'avant */
-h1.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: normal; }
+h1.section-label, h2.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: normal; }
 /* Un mot très long (ER_FK_INCOMPATIBLE_COLUMNS…) ne sort plus de sa carte */
 .post-card-title { overflow-wrap: anywhere; }
 /* Expériences et Projets : colonne plus large, texte plus lisible */
@@ -982,8 +982,9 @@ h1.section-label, h1.sc-label { font-weight: 400; margin-top: 0; line-height: no
   .page-a-propos .ap-intro { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
   .page-a-propos .ap-photo { width: 120px; height: 120px; }
 }
-/* « Me contacter » mène au formulaire, sous la barre de navigation fixe */
-.page-a-propos #contact { scroll-margin-top: 90px; }
+/* Bloc contact en haut de page, avant la présentation */
+.page-a-propos #contact { margin-bottom: 4.5rem; }
+@media (max-width: 700px) { .page-a-propos #contact { margin-bottom: 3rem; } }
 
 /* Animations décoratives en pause pendant le chargement (classe .sof-go posée 2,5 s après « load »
    par default.hbs) : la page s'affiche sans travail superflu, puis tout s'anime. */
