@@ -51,7 +51,7 @@
 <!-- RGPD Cookie Banner -->
 <div id="rgpd-banner" class="rgpd-banner" role="dialog" aria-label="Gestion des cookies">
   <p class="rgpd-banner-text">
-    🍪 Ce site peut utiliser des cookies à des fins d'analyse. Aucune donnée personnelle n'est collectée sans votre accord, conformément au <strong>RGPD</strong>.
+    🍪 Avec votre accord, ce site utilise Google Analytics pour mesurer son audience. Tant que vous n'avez pas accepté, aucun outil de mesure n'est chargé et aucune donnée n'est envoyée, conformément au <strong>RGPD</strong>.
   </p>
   <div class="rgpd-banner-actions">
     <button class="rgpd-btn-refuse" onclick="rgpdRefuse()">Refuser</button>
@@ -59,22 +59,59 @@
   </div>
 </div>
 
-<script>
-(function() {
-  var consent = localStorage.getItem('rgpd-consent');
-  if (!consent) {
-    document.getElementById('rgpd-banner').classList.add('visible');
-  }
-})();
+<script data-cfasync="false">
+/* RGPD — Google Tag Manager n'est chargé QU'APRÈS un clic sur « Accepter »
+   (ou si le visiteur avait déjà accepté). Sans accord : aucun script Google, aucune requête. */
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('consent', 'default', {
+  analytics_storage: 'denied', ad_storage: 'denied',
+  ad_user_data: 'denied', ad_personalization: 'denied'
+});
+
+function _rgpdGet() { try { return localStorage.getItem('rgpd-consent'); } catch (e) { return null; } }
+function _rgpdSet(v) { try { localStorage.setItem('rgpd-consent', v); } catch (e) {} }
+
+function sofLoadAnalytics() {
+  if (window._sofGtmLoaded) return;
+  window._sofGtmLoaded = true;
+  gtag('consent', 'update', { analytics_storage: 'granted' });   // publicité : reste refusée
+  dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5N7NRJ9M';
+  document.head.appendChild(s);
+}
+
+function _rgpdClearCookies() {
+  // retrait du consentement : supprimer les cookies Google Analytics (_ga, _ga_*, _gid)
+  document.cookie.split(';').forEach(function (c) {
+    var name = c.split('=')[0].trim();
+    if (/^_ga($|_)|^_gid$/.test(name)) {
+      ['', '; domain=' + location.hostname, '; domain=.' + location.hostname.replace(/^www\./, '')].forEach(function (d) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
+      });
+    }
+  });
+}
 
 function rgpdAccept() {
-  localStorage.setItem('rgpd-consent', 'accepted');
+  _rgpdSet('accepted');
   document.getElementById('rgpd-banner').classList.remove('visible');
+  sofLoadAnalytics();
 }
 function rgpdRefuse() {
-  localStorage.setItem('rgpd-consent', 'refused');
+  _rgpdSet('refused');
   document.getElementById('rgpd-banner').classList.remove('visible');
+  if (window._sofGtmLoaded) gtag('consent', 'update', { analytics_storage: 'denied' });
+  _rgpdClearCookies();
 }
+
+(function () {
+  var consent = _rgpdGet();
+  if (consent === 'accepted') sofLoadAnalytics();
+  else if (!consent) document.getElementById('rgpd-banner').classList.add('visible');
+})();
 </script>
 
 <!-- Aria-label SofBot — inline, actif dès le chargement -->

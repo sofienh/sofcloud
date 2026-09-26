@@ -5,7 +5,8 @@
   <a href="{{@site.url}}" class="back-link" id="back-link">← Retour au blog</a>
   <script>
   if (/^\/lab-notes-/.test(window.location.pathname)) {
-    document.getElementById('back-link').href = '/tag/lab-notes/';
+    document.getElementById('back-link').href = '/lab-notes/';
+    document.getElementById('back-link').textContent = '← Toutes les lab notes';
   }
   </script>
 
@@ -17,7 +18,7 @@
         {{/if}}
         <span class="post-header-date">{{date published_at format="DD MMMM YYYY"}}</span>
         {{#if reading_time}}
-        <span class="post-header-readtime">· {{reading_time}} min de lecture</span>
+        <span class="post-header-readtime">· {{reading_time minute="1 min de lecture" minutes="% min de lecture"}}</span>
         {{/if}}
       </div>
       <h1 class="post-title">{{title}}</h1>

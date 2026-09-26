@@ -2,7 +2,7 @@
   <div class="post-card-meta">
     <span class="post-card-date">{{date published_at format="DD MMM YYYY"}}</span>
     {{#if reading_time}}
-    <span class="post-card-readtime">· {{reading_time}} min</span>
+    <span class="post-card-readtime">· {{reading_time minute="1 min" minutes="% min"}}</span>
     {{/if}}
   </div>
   <h2 class="post-card-title">{{title}}</h2>

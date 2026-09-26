@@ -61,6 +61,20 @@
 })();
 </script>
 
+<script>
+/* « Lab Notes #NN — Titre » → numéro au-dessus, titre en dessous */
+(function () {
+  var re = /^\s*(Lab Notes #\d+)\s*[\u2014\u2013-]\s*(.+)$/;
+  document.querySelectorAll('.post-title, .post-card-title').forEach(function (el) {
+    var m = re.exec(el.textContent);
+    if (!m) return;
+    var k = document.createElement('span'); k.className = 'ln-kicker'; k.textContent = m[1];
+    var t = document.createElement('span'); t.className = 'ln-title'; t.textContent = m[2];
+    el.textContent = ''; el.appendChild(k); el.appendChild(t);
+    el.classList.add('ln-split');
+  });
+})();
+</script>
 {{ghost_foot}}
 </body>
 </html>

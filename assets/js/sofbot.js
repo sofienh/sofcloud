@@ -1,4 +1,4 @@
-import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js";
+import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed@3.1.6/dist/web.js";
 
 var _p = window.location.pathname;
 var _c = {
