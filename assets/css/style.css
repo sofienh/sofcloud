@@ -249,7 +249,7 @@ body {
 }
 .sc-hero-inner {
   max-width: 1400px; margin: 0 auto; width: 100%;
-  display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: center;
+  display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: stretch;
   position: relative; z-index: 1; padding: 0 3rem;
 }
 .hero-badge {
@@ -326,6 +326,7 @@ body {
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.3);
   border-radius: 12px; padding: 2rem;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;
   opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
 }
 .hero-card-avatar {
@@ -334,12 +335,18 @@ body {
   margin-bottom: 1rem;
 }
 /* Nom et ville à gauche, insigne à droite */
-.hero-card-id { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; }
+.hero-card-id { display: flex; flex-direction: row-reverse; justify-content: space-between; align-items: center; gap: 1.25rem; }
 .hero-card-id .hero-card-avatar { margin-bottom: 0; flex-shrink: 0; }
 .hero-card-id .hero-card-role { margin-bottom: 0; }
+/* Écusson de mission : couleurs de la page en cours */
+.patch-ring, .hdp-ring { stroke: var(--accent); }
+.patch-orbit, .hdp-orbit { fill: none; stroke: var(--accent); stroke-width: 4; opacity: 0.55; }
+.hdp-orbit { stroke-width: 12; }
+.patch-txt { fill: var(--accent-light, var(--accent)); }
+.patch-sub { fill: var(--text-soft); }
 .hero-card-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; }
 .hero-card-role { font-size: 0.8rem; color: var(--text-muted); font-family: var(--mono); margin-bottom: 1.5rem; }
-.hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+.hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .card-stat { background: var(--bg); border-radius: var(--radius); padding: 0.75rem; }
 .card-stat-link { display: block; text-decoration: none; border: 1px solid transparent; transition: border-color 0.15s; }
 .card-stat-link:hover { border-color: rgba(251,113,133,0.5); }
