@@ -871,6 +871,9 @@ body {
 .post-template.tag-lab-notes .post-content pre { margin: 2rem 0 2.25rem; padding: 1.5rem 1.75rem; }
 .post-template.tag-lab-notes .post-content pre code { line-height: 1.7; font-size: 0.86rem; }
 .post-template.tag-lab-notes .post-footer { margin-top: 5rem; }
+/* Pas de mot seul en fin de paragraphe (« J'ai » orphelin) : le navigateur rééquilibre les dernières lignes */
+.post-template.tag-lab-notes .post-content :is(p, li, dd, figcaption, td) { text-wrap: pretty; }
+.post-template.tag-lab-notes .post-content :is(h2, h3) { text-wrap: balance; }
 
 /* Blocs de lecture pour les non-spécialistes */
 .post-content .ln-bref {

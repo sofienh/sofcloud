@@ -99,6 +99,26 @@
   });
 })();
 </script>
+
+<script>
+/* Lab notes, typographie : pas de mot court orphelin en fin de ligne.
+   1. un mot court qui ouvre une phrase (« J'ai », « Le », « Il »…) reste collé au mot suivant ;
+   2. sans « text-wrap: pretty » (Firefox), les deux derniers mots du paragraphe sont liés.
+   Espaces insécables ajoutées au rendu, le texte en base n'est pas modifié. */
+(function () {
+  if (!document.body.classList.contains('tag-lab-notes')) return;
+  var pretty = window.CSS && CSS.supports('text-wrap', 'pretty');
+  document.querySelectorAll('.post-content :is(p, li, dd, figcaption)').forEach(function (el) {
+    var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), n, last = null;
+    while ((n = w.nextNode())) {
+      if (n.parentNode.closest('code, pre')) continue;
+      n.nodeValue = n.nodeValue.replace(/(^|[.!?:»]\s+)([^\s]{1,4})[ \t\n]+(?=\S)/g, '$1$2\u00A0');
+      if (/\S\s+\S/.test(n.nodeValue)) last = n;
+    }
+    if (!pretty && last) last.nodeValue = last.nodeValue.replace(/(\S)[ \t\n]+(\S+\s*)$/, '$1\u00A0$2');
+  });
+})();
+</script>
 {{ghost_foot}}
 </body>
 </html>
