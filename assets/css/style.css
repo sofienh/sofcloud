@@ -344,7 +344,7 @@ body {
 .hdp-orbit { stroke-width: 12; }
 .patch-txt { fill: var(--accent-light, var(--accent)); }
 .patch-sub { fill: var(--text-soft); }
-.hero-card-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; }
+.hero-card-name { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; text-wrap: balance; }
 .hero-card-role { font-size: 0.8rem; color: var(--text-muted); font-family: var(--mono); margin-bottom: 1.5rem; }
 .hero-card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 .card-stat { background: var(--bg); border-radius: var(--radius); padding: 0.75rem; }
