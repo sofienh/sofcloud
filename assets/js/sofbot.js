@@ -24,7 +24,9 @@ Chatbot.init({
       backgroundColor: "#1a1a1a",
       textColor: "#ffffff",
       title: "SofBot",
-      welcomeMessage: "Bonjour ! Je suis SofBot, posez-moi vos questions sur Soufiane et ses projets.",
+      welcomeMessage: "Bonjour ! Je suis SofBot, un assistant IA : posez-moi vos questions sur Soufiane et ses projets.",
+      // AI Act : informer qu'on parle à une IA et où partent les messages
+      footer: { text: "Assistant IA · réponses générées via Groq ·", company: "Confidentialité", companyLink: "https://sofcloud.org/confidentialite/" },
       titleColor: "#ffffff",
       titleBackgroundColor: _col,
       userMessage: { backgroundColor: _col, textColor: "#ffffff" },

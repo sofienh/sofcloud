@@ -16,6 +16,8 @@
   <p class="footer-rgpd">
     🔒 Site conforme <strong>RGPD</strong> — Aucun cookie tiers sans votre consentement
     · <a href="#rgpd-banner" onclick="document.getElementById('rgpd-banner').classList.add('visible'); return false;">Gérer mes préférences</a>
+    · <a href="/confidentialite/">Confidentialité</a>
+    · <a href="/mentions-legales/">Mentions légales</a>
   </p>
   <details class="footer-credits">
     <summary>Crédits &amp; Open Source</summary>
@@ -72,8 +74,24 @@ gtag('consent', 'default', {
   ad_user_data: 'denied', ad_personalization: 'denied'
 });
 
-function _rgpdGet() { try { return localStorage.getItem('rgpd-consent'); } catch (e) { return null; } }
-function _rgpdSet(v) { try { localStorage.setItem('rgpd-consent', v); } catch (e) {} }
+/* Choix mémorisé avec sa date : accord valable 13 mois, refus 6 mois (recommandations CNIL),
+   puis le bandeau réapparaît. Ancien format sans date → daté d'aujourd'hui. */
+var _RGPD_TTL = { accepted: 395, refused: 182 };   // en jours
+function _rgpdGet() {
+  try {
+    var raw = localStorage.getItem('rgpd-consent');
+    if (!raw) return null;
+    var c = raw.charAt(0) === '{' ? JSON.parse(raw) : { v: raw, t: Date.now() };
+    if (raw.charAt(0) !== '{') localStorage.setItem('rgpd-consent', JSON.stringify(c));
+    if (!_RGPD_TTL[c.v] || Date.now() - c.t > _RGPD_TTL[c.v] * 864e5) {
+      localStorage.removeItem('rgpd-consent');
+      _rgpdClearCookies();
+      return null;
+    }
+    return c.v;
+  } catch (e) { return null; }
+}
+function _rgpdSet(v) { try { localStorage.setItem('rgpd-consent', JSON.stringify({ v: v, t: Date.now() })); } catch (e) {} }
 
 function sofLoadAnalytics() {
   if (window._sofGtmLoaded) return;
