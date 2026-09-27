@@ -29,7 +29,7 @@ Thème Ghost sombre, écrit sur mesure pour [sofcloud.org](https://sofcloud.org)
 - **Veille sécurité** : flux RSS de 7 sources (LeMondeInformatique, IT-Connect, Zataz, CERT-FR, Undernews, Korben, FrenchBreaches), filtrables par source. Les contenus externes sont échappés (`esc()`) et les liens validés (`safeUrl()`)
 - **Lab Notes** : route `/lab-notes/` (gabarit `tag-lab-notes.hbs`, 16 par page)
   - titre `Lab Notes #NN — Sujet` affiché en deux lignes (numéro au-dessus), sur l'article et les cartes
-  - mise en page aérée réservée aux articles tagués `lab-notes` (colonne centrée de 820 px)
+  - mise en page aérée (colonne centrée de 820 px) pour les articles tagués `lab-notes`, reprise par les pages légales
   - blocs de lecture pour non-spécialistes, à utiliser dans le contenu HTML des articles :
 
     ```html
@@ -38,8 +38,9 @@ Thème Ghost sombre, écrit sur mesure pour [sofcloud.org](https://sofcloud.org)
     <div class="ln-note">Aparté ou mise à jour</div>
     <div class="ln-retenir"><span class="ln-label">À retenir</span><ul><li>…</li></ul></div>
     ```
-- **SofBot** : chatbot chargé en différé (premier clic ou touche, sinon après 4 s), couleur selon la page
-- **Consentement RGPD** : aucun script Google ni cookie avant un clic sur « Accepter » ; « Refuser » révoque le consentement et supprime les cookies `_ga*`
+- **SofBot** : chatbot chargé en différé (premier clic ou touche, sinon après 4 s), couleur selon la page. Il se présente comme un assistant IA et rappelle en bas de sa fenêtre que les réponses passent par Groq (obligation d'information du règlement européen sur l'IA)
+- **Consentement RGPD** : aucun script Google ni cookie avant un clic sur « Accepter » ; « Refuser » révoque le consentement et supprime les cookies `_ga*`. Le choix est daté et redemandé au bout de 13 mois (accord) ou 6 mois (refus), comme le recommande la CNIL ; à l'expiration, les cookies `_ga*` sont supprimés
+- **Pages légales** : `/mentions-legales/` et `/confidentialite/`, liées dans le pied de page. Leur contenu est dans Ghost (carte HTML avec les blocs `ln-bref` et `ln-termes`), leur mise en page dans `style.css`
 - **Veille** : 24 articles puis bouton « Voir plus »
 - **Accessibilité** : un `h1` par page, réglage « réduire les animations » respecté (étoiles figées, sans fondu), étoiles en pause hors de l'écran
 - Temps de lecture et pagination en français, bouton retour en haut, navigation responsive
@@ -59,7 +60,8 @@ Le zip peut aussi être importé depuis Ghost Admin : Réglages → Design → C
 ## Configuration
 
 - **Google Tag Manager** : l'identifiant (`GTM-…`) est dans la fonction `sofLoadAnalytics()` de `partials/footer.hbs`. Ne pas remettre GTM dans l'injection de code de Ghost : il se chargerait avant le consentement.
-- **SofBot** : `assets/js/sofbot.js` (identifiant du chatflow, hôte de l'API, couleurs). La version de `flowise-embed` est figée dans l'URL d'import ; pour en changer, modifier `@3.1.6`.
+- **SofBot** : `assets/js/sofbot.js` (identifiant du chatflow, hôte de l'API, couleurs, message d'accueil et mention IA). La version de `flowise-embed` est figée dans l'URL d'import ; pour en changer, modifier `@3.1.6`.
+- **Durée du consentement** : constante `_RGPD_TTL` (en jours) dans `partials/footer.hbs`. Si elle change, mettre à jour la page `/confidentialite/`.
 - **Route Lab Notes** : `content/settings/routes.yaml` de Ghost (`filter: tag:lab-notes`, `template: tag-lab-notes`, `limit: 16`).
 
 ## Chatbot IA — SofBot
@@ -79,6 +81,7 @@ Hors du thème, dans `/stockage/scripts/` sur le serveur :
 |--------|------|------|
 | `fetch-rss.py` | Agrège les flux RSS → `content/files/security-feed.json` | `0 6,18 * * *` |
 | `fetch-kuma.py` | Lit la base d'Uptime Kuma → `content/files/kuma-status.json` | `*/5 * * * *` |
+| `docker-cleanup.sh` | Supprime entre autres les conversations SofBot de plus de 6 mois (durée annoncée sur `/confidentialite/`) | hebdomadaire |
 
 La veille n'est collectée que deux fois par jour : depuis l'adresse d'un centre de données, des requêtes trop fréquentes déclenchent les protections anti-robots des sites sources.
 
