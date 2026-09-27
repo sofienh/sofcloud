@@ -87,4 +87,4 @@ La veille n'est collectée que deux fois par jour : depuis l'adresse d'un centre
 
 ## Auteur
 
-Soufiane H. — [sofcloud.org](https://sofcloud.org)
+Soufiane Hammami — [sofcloud.org](https://sofcloud.org)
