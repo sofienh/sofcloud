@@ -83,6 +83,19 @@ body {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
+
+/* Changement de page : fondu enchaîné natif du navigateur (sans JavaScript, sans écran noir).
+   La barre du haut a son propre nom de transition : elle reste en place pendant le fondu.
+   Navigateurs sans prise en charge (Firefox) : changement de page classique. */
+@view-transition { navigation: auto; }
+/* nom posé seulement pendant la transition : en permanence, il faisait chuter PageSpeed desktop (CLS 0,8) */
+html:active-view-transition .site-header { view-transition-name: site-header; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.3s; }
+::view-transition-group(site-header), ::view-transition-new(site-header) { animation: none; }
+::view-transition-old(site-header) { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+}
 .site-nav-left { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
 .nav-brand-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
 .nav-brand-name { font-weight: 600; font-size: 0.95rem; color: var(--text); }
