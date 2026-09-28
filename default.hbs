@@ -70,29 +70,6 @@
 </script>
 
 <script>
-(function () {
-  document.addEventListener('click', function (e) {
-    var link = e.target.closest('a[href]');
-    if (!link) return;
-    var href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank' || e.ctrlKey || e.metaKey) return;
-    if (href.startsWith('http')) { try { var u = new URL(href); if (u.hostname !== window.location.hostname) return; } catch(e) { return; } }
-    /* Ancre sur la page en cours : pas de rechargement, donc pas de fondu (sinon la page reste noire) */
-    var dest = new URL(href, window.location.href);
-    if (dest.hash && dest.pathname === window.location.pathname && dest.search === window.location.search) return;
-    e.preventDefault();
-    document.body.style.transition = 'opacity 0.28s ease';
-    document.body.style.opacity = '0';
-    setTimeout(function () { window.location.href = href; }, 290);
-  });
-  /* Retour arrière (page restaurée depuis le cache du navigateur) : réafficher la page */
-  window.addEventListener('pageshow', function (e) {
-    if (e.persisted) { document.body.style.opacity = ''; }
-  });
-})();
-</script>
-
-<script>
 /* « Lab Notes #NN — Titre » → numéro au-dessus, titre en dessous */
 (function () {
   var re = /^\s*(Lab Notes #\d+)\s*[\u2014\u2013-]\s*(.+)$/;
