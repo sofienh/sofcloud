@@ -28,95 +28,64 @@
     <h1 class="section-label">02 — Compétences</h1>
   </div>
 
+  <style>
+  .page-competences .skills-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  @media (max-width: 900px) { .page-competences .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .page-competences .skills-grid { grid-template-columns: 1fr; } }
+  </style>
   <div class="skills-grid">
 
     <div class="skill-item">
       <div class="skill-item-icon">🛡️</div>
       <div class="skill-item-name">Cybersécurité</div>
-      <div class="skill-item-desc">SOC, IDS/IPS, audit sécurité, SIEM Wazuh (XDR), analyse des risques EBIOS Risk Manager, tableaux de bord sécurité, maintenance SIEM</div>
+      <div class="skill-item-desc">Détection et réponse aux incidents (SOC, SIEM Wazuh XDR), audit Active Directory avec PingCastle, analyse de risques EBIOS Risk Manager, durcissement Linux, campagne de phishing Red Team.</div>
       <div class="tags">
-        <span class="tag">CrowdSec</span><span class="tag">Wazuh XDR</span><span class="tag">EBIOS RM</span><span class="tag">Kali Linux</span><span class="tag">PingCastle</span><span class="tag">Exogol</span><span class="tag">Auditd</span><span class="tag">rkhunter</span><span class="tag">iptables</span>
+        <span class="tag">Wazuh XDR</span><span class="tag">CrowdSec</span><span class="tag">PingCastle</span><span class="tag">EBIOS RM</span><span class="tag">auditd</span><span class="tag">rkhunter</span><span class="tag">Lynis</span><span class="tag">iptables</span><span class="tag">Kali Linux</span>
       </div>
     </div>
 
     <div class="skill-item">
       <div class="skill-item-icon">🌐</div>
-      <div class="skill-item-name">Réseaux &amp; Infrastructure</div>
-      <div class="skill-item-desc">LAN/WLAN, VPN, routage, switching, VLSM, câblage structuré, tolérance de pannes, Plan de Reprise d'Activité (PRA), vidéosurveillance. Déploiement Edge Core (Madrid).</div>
+      <div class="skill-item-name">Réseaux &amp; Télécom</div>
+      <div class="skill-item-desc">LAN/WAN/WLAN, VLAN et plans d'adressage VLSM, VPN site-à-site, DNS/DHCP, reverse proxy. Datacenter : baies, câblage structuré, fibre optique, équipements de signalisation Oracle Tekelec Eagle 5 pour Orange.</div>
       <div class="tags">
-        <span class="tag">WireGuard</span><span class="tag">Nginx</span><span class="tag">DNS/DHCP</span><span class="tag">VLAN/VLSM</span><span class="tag">LAN/MAN/WAN</span><span class="tag">LDAP</span><span class="tag">Samba 4</span><span class="tag">RAID</span><span class="tag">Edge Core</span><span class="tag">PRA</span>
+        <span class="tag">WireGuard</span><span class="tag">VLAN/VLSM</span><span class="tag">VPN</span><span class="tag">DNS/DHCP</span><span class="tag">Nginx</span><span class="tag">Cloudflare</span><span class="tag">Fibre optique</span><span class="tag">Datacenter</span><span class="tag">Oracle Tekelec</span>
       </div>
     </div>
 
     <div class="skill-item">
       <div class="skill-item-icon">🐳</div>
-      <div class="skill-item-name">DevOps &amp; Cloud</div>
-      <div class="skill-item-desc">Containerisation Docker, monitoring Grafana/Prometheus, Oracle Cloud ARM64, Nextcloud, pipelines CI/CD, déploiement automatisé.</div>
+      <div class="skill-item-name">Systèmes, conteneurs &amp; cloud</div>
+      <div class="skill-item-desc">Administration Linux et Windows Server, Active Directory et GPO, virtualisation Proxmox/VMware, conteneurs Docker, supervision Grafana/Prometheus/Loki, Oracle Cloud ARM64.</div>
       <div class="tags">
-        <span class="tag">Docker</span><span class="tag">Portainer</span><span class="tag">Grafana</span><span class="tag">Prometheus</span><span class="tag">Nextcloud</span><span class="tag">CI/CD</span><span class="tag">Oracle Cloud</span>
+        <span class="tag">Debian/Ubuntu</span><span class="tag">Windows Server</span><span class="tag">AD DS/GPO</span><span class="tag">Proxmox</span><span class="tag">VMware</span><span class="tag">Docker</span><span class="tag">Grafana</span><span class="tag">Prometheus</span><span class="tag">Loki</span>
       </div>
     </div>
 
     <div class="skill-item">
-      <div class="skill-item-icon">🖥️</div>
-      <div class="skill-item-name">Systèmes</div>
-      <div class="skill-item-desc">Administration Linux/Windows Server, virtualisation Proxmox/VMware, GPO, GLPI, IT Asset Management</div>
+      <div class="skill-item-icon">💻</div>
+      <div class="skill-item-name">Scripting &amp; automatisation</div>
+      <div class="skill-item-desc">Scripts Bash et Python pour l'exploitation : sauvegardes chiffrées, alertes, rapports automatiques, intégration d'API. Versionnement avec Git et GitHub.</div>
       <div class="tags">
-        <span class="tag">Debian</span><span class="tag">Ubuntu</span><span class="tag">FreeNAS</span><span class="tag">Windows Server</span><span class="tag">GPO/AD DS</span><span class="tag">Shell Script</span><span class="tag">Proxmox</span><span class="tag">VMware</span>
-      </div>
-    </div>
-
-    <div class="skill-item">
-      <div class="skill-item-icon">📋</div>
-      <div class="skill-item-name">Management de Projet</div>
-      <div class="skill-item-desc">Pilotage de projets IT de bout en bout : étude avant-projet, planification, suivi/contrôle, clôture. Gestion des risques, rédaction d'appels d'offres et cahiers des charges, gestion des coûts et de la recette.</div>
-      <div class="tags">
-        <span class="tag">Chef de projet</span><span class="tag">Étude avant-projet</span><span class="tag">Gestion des risques</span><span class="tag">Gestion des coûts</span><span class="tag">Appels d'offres</span><span class="tag">Cahier des charges</span><span class="tag">Reporting</span>
+        <span class="tag">Bash</span><span class="tag">Python</span><span class="tag">Git/GitHub</span><span class="tag">API REST</span><span class="tag">Cron</span><span class="tag">Node.js</span>
       </div>
     </div>
 
     <div class="skill-item">
       <div class="skill-item-icon">🔐</div>
       <div class="skill-item-name">IAM &amp; ITSM</div>
-      <div class="skill-item-desc">Identity and Access Management (IAM) : gouvernance des accès, MFA, SSO, annuaires. ITIL/ITSM : gestion des incidents, problèmes et changements, mise en place GLPI, KPIs support IT.</div>
+      <div class="skill-item-desc">Gestion des identités et des accès : annuaires, MFA, SSO. ITIL/ITSM : incidents, problèmes et changements, GLPI administré de la gestion de parc au suivi des tickets.</div>
       <div class="tags">
-        <span class="tag">IAM</span><span class="tag">ITIL</span><span class="tag">ITSM</span><span class="tag">GLPI</span><span class="tag">Gestion des incidents</span><span class="tag">MFA/SSO</span><span class="tag">Active Directory</span>
+        <span class="tag">Active Directory</span><span class="tag">MFA/SSO</span><span class="tag">ITIL</span><span class="tag">GLPI</span><span class="tag">Gestion des incidents</span>
       </div>
     </div>
 
     <div class="skill-item">
-      <div class="skill-item-icon">👥</div>
-      <div class="skill-item-name">Management des Hommes</div>
-      <div class="skill-item-desc">Leadership, animation d'équipe, Communication Non-Violente (CNV), gestion des conflits, profils comportementaux (DISC 4 couleurs), assertivité. Esprit d'équipe, écoute active, pédagogie.</div>
+      <div class="skill-item-icon">📋</div>
+      <div class="skill-item-name">Gestion de projet &amp; équipe</div>
+      <div class="skill-item-desc">Projets IT de bout en bout : avant-projet, cahier des charges, appels d'offres, budget, recette. Direction technique et encadrement d'équipes, formateur certifié SMC Networks (aujourd'hui Edgecore) de 2007 à 2011, rédaction technique.</div>
       <div class="tags">
-        <span class="tag">Leadership</span><span class="tag">Gestion d'équipe</span><span class="tag">CNV</span><span class="tag">Gestion des conflits</span><span class="tag">DISC 4 couleurs</span><span class="tag">Assertivité</span>
-      </div>
-    </div>
-
-    <div class="skill-item">
-      <div class="skill-item-icon">⚡</div>
-      <div class="skill-item-name">Télécom &amp; Datacenter</div>
-      <div class="skill-item-desc">Baies, câblage, Oracle Tekelec Eagle 5, Anritsu (Bucarest), signalétique datacenter. Déploiements Orange national (Île-de-France, Lyon, Marseille, Toulouse, Metz). IPTV Hoist Group (Copenhague).</div>
-      <div class="tags">
-        <span class="tag">Oracle Tekelec</span><span class="tag">Anritsu</span><span class="tag">Polycom</span><span class="tag">Câblage structuré</span><span class="tag">Datacenter</span><span class="tag">IPTV</span>
-      </div>
-    </div>
-
-    <div class="skill-item">
-      <div class="skill-item-icon">💻</div>
-      <div class="skill-item-name">Scripting &amp; Automatisation</div>
-      <div class="skill-item-desc">Scripting Bash, automatisation d'infrastructure, développement d'outils internes (Node.js, Express, MongoDB). Intégration d'APIs, traitement de données, génération de rapports automatisés.</div>
-      <div class="tags">
-        <span class="tag">Bash</span><span class="tag">Node.js</span><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">Automatisation</span><span class="tag">APIs</span>
-      </div>
-    </div>
-
-    <div class="skill-item">
-      <div class="skill-item-icon">🤝</div>
-      <div class="skill-item-name">Compétences transversales</div>
-      <div class="skill-item-desc">Force de proposition, autonomie, prise d'initiative, rigueur, gestion du stress, organisation, sens du relationnel, éthique professionnelle. Rédaction technique, conduite du changement.</div>
-      <div class="tags">
-        <span class="tag">Force de proposition</span><span class="tag">Autonomie</span><span class="tag">Prise d'initiative</span><span class="tag">Conduite du changement</span><span class="tag">Rédaction technique</span><span class="tag">Travail en équipe</span>
+        <span class="tag">Cahier des charges</span><span class="tag">Appels d'offres</span><span class="tag">Gestion des risques</span><span class="tag">Encadrement</span><span class="tag">Formation</span><span class="tag">Rédaction technique</span>
       </div>
     </div>
 
@@ -134,8 +103,8 @@
       <div class="langue-item">
         <span class="langue-flag">🇬🇧</span>
         <span class="langue-name">Anglais</span>
-        <div class="langue-bar"><div class="langue-fill" style="width:70%"></div></div>
-        <span class="langue-level">B2 — Professionnel</span>
+        <div class="langue-bar"><div class="langue-fill" style="width:55%"></div></div>
+        <span class="langue-level">B1 — Technique</span>
       </div>
       <div class="langue-item">
         <span class="langue-flag">🇹🇳</span>
